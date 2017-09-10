@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <CVIncludeDir>C:\opencv3.0\opencv\build\include</CVIncludeDir>
+    <CVLibDir_x64>C:\opencv3.0\opencv\build\x64\vc12\lib</CVLibDir_x64>
+    <CVLibDir_x86>C:\opencv3.0\opencv\build\x86\vc12\lib</CVLibDir_x86>
+    <CVLibName_Debug>opencv_world300d.lib</CVLibName_Debug>
+    <CVLibName_Release>opencv_world300.lib</CVLibName_Release>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="CVIncludeDir">
+      <Value>$(CVIncludeDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CVDLLDir_x64">
+      <Value>$(CVDLLDir_x64)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CVDLLDir_x86">
+      <Value>$(CVDLLDir_x86)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CVDLLName_Debug">
+      <Value>$(CVDLLName_Debug)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CVDLLName_Release">
+      <Value>$(CVDLLName_Release)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
