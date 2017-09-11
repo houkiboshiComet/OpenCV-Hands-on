@@ -149,12 +149,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ImagingController.h" />
+    <ClInclude Include="ImageController.h" />
+    <ClInclude Include="ImageProcessor.h" />
     <ClInclude Include="ImagingWrapper.h" />
+    <ClInclude Include="Properties.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ImagingController.cpp" />
+    <ClCompile Include="ImageController.cpp" />
+    <ClCompile Include="ImageProcessor.cpp" />
     <ClCompile Include="ImagingWrapper.cpp" />
+    <ClCompile Include="Properties.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

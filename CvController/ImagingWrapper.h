@@ -10,24 +10,27 @@ namespace cv{
 }
 
 #using <system.drawing.dll>
-#include "ImagingController.h"
+#include "ImageController.h"
+
 
 namespace OpenCVApp {
 
 	public ref class ImagingWrapper
 	{
 	public:
-		System::Drawing::Bitmap^ read(String^ fileName);
+		void read(String^ fileName);
+		System::Drawing::Bitmap^ getImage();
+		void updateBaseSettings(int r, int g, int b, int blur);
 
 		ImagingWrapper();
 		~ImagingWrapper();
 
 	private:
-		ImagingController* controller;
-
+		ImageController* controller;
 
 		static System::Drawing::Bitmap^ toBitmap(const cv::Mat* src);
 		static std::string toStdStr(String^ src);
+		static int toSafetyValue(int value);
 
 	};
 }

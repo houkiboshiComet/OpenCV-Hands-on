@@ -27,16 +27,35 @@ namespace OpenCVApp
             {
                 try
                 {
-                    Bitmap bitmap = imager.read(openFileDialog.FileName);
-
-                    //ImageオブジェクトのGraphicsオブジェクトを作成する
-                    //Graphics g = Graphics.FromImage(bitmap);
-
-                    pictureBox.Image = bitmap;
-                } catch(Exception) {
-
+                    imager.read(openFileDialog.FileName);
+                    UpdateImage();
                 }
+                catch (System.IO.IOException exeption)
+                {
+                    MessageBox.Show("サポートされていないファイルフォーマットです。" + Environment.NewLine
+                        + exeption.Message, "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                } 
             }
+        }
+
+        private void UpdateImage()
+        {
+            if (pictureBox.Image != null)
+            {
+                pictureBox.Image.Dispose();
+            }
+            pictureBox.Image = imager.getImage();
+        }
+
+        private void BaseSettingChanged(object sender, EventArgs e)
+        {
+            imager.updateBaseSettings(
+                trackBar_ForRed.Value,
+                trackBar_ForGreen.Value,
+                trackBar_ForBlue.Value,
+                0);
+            UpdateImage();
         }
     }
 }
