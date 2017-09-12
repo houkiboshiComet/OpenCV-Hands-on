@@ -38,11 +38,24 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.trackBar_forBlur = new System.Windows.Forms.TrackBar();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.trackBar_ForZoom = new System.Windows.Forms.TrackBar();
+            this.label6 = new System.Windows.Forms.Label();
+            this.box_ForZoomRatio = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_ForRed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_ForGreen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_ForBlue)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_forBlur)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_ForZoom)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonForSelectImage
@@ -59,7 +72,7 @@
             // 
             // openFileDialog
             // 
-            this.openFileDialog.FileName = "openFileDialog";
+            this.openFileDialog.Filter = "Image Files (*.bmp, *.jpg, *.jpeg., *.png)|*.bmp;*.jpg; *.jpeg; *.png;";
             // 
             // pictureBox
             // 
@@ -154,12 +167,141 @@
             this.label3.TabIndex = 8;
             this.label3.Text = "Blue";
             // 
+            // trackBar_forBlur
+            // 
+            this.trackBar_forBlur.BackColor = System.Drawing.Color.White;
+            this.trackBar_forBlur.LargeChange = 10;
+            this.trackBar_forBlur.Location = new System.Drawing.Point(12, 227);
+            this.trackBar_forBlur.Maximum = 100;
+            this.trackBar_forBlur.Name = "trackBar_forBlur";
+            this.trackBar_forBlur.Size = new System.Drawing.Size(171, 45);
+            this.trackBar_forBlur.TabIndex = 9;
+            this.trackBar_forBlur.TickFrequency = 50;
+            this.trackBar_forBlur.Value = 50;
+            this.trackBar_forBlur.ValueChanged += new System.EventHandler(this.BaseSettingChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.Color.Transparent;
+            this.label4.Font = new System.Drawing.Font("メイリオ", 10F);
+            this.label4.ForeColor = System.Drawing.Color.Black;
+            this.label4.Location = new System.Drawing.Point(19, 211);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(51, 21);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Sharp";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.Color.Transparent;
+            this.label5.Font = new System.Drawing.Font("メイリオ", 10F);
+            this.label5.ForeColor = System.Drawing.Color.Black;
+            this.label5.Location = new System.Drawing.Point(145, 211);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(38, 21);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "Blur";
+            // 
+            // trackBar_ForZoom
+            // 
+            this.trackBar_ForZoom.BackColor = System.Drawing.Color.White;
+            this.trackBar_ForZoom.LargeChange = 10;
+            this.trackBar_ForZoom.Location = new System.Drawing.Point(344, 604);
+            this.trackBar_ForZoom.Maximum = 150;
+            this.trackBar_ForZoom.Minimum = 10;
+            this.trackBar_ForZoom.Name = "trackBar_ForZoom";
+            this.trackBar_ForZoom.Size = new System.Drawing.Size(683, 45);
+            this.trackBar_ForZoom.TabIndex = 12;
+            this.trackBar_ForZoom.TickFrequency = 10;
+            this.trackBar_ForZoom.Value = 100;
+            this.trackBar_ForZoom.ValueChanged += new System.EventHandler(this.trackBar_ForZoom_ValueChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.BackColor = System.Drawing.Color.Transparent;
+            this.label6.Font = new System.Drawing.Font("メイリオ", 12F);
+            this.label6.ForeColor = System.Drawing.Color.Black;
+            this.label6.Location = new System.Drawing.Point(224, 605);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(100, 24);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "Zoom Ratio";
+            // 
+            // box_ForZoomRatio
+            // 
+            this.box_ForZoomRatio.Font = new System.Drawing.Font("メイリオ", 12F);
+            this.box_ForZoomRatio.Location = new System.Drawing.Point(1039, 602);
+            this.box_ForZoomRatio.Name = "box_ForZoomRatio";
+            this.box_ForZoomRatio.Size = new System.Drawing.Size(110, 31);
+            this.box_ForZoomRatio.TabIndex = 14;
+            this.box_ForZoomRatio.Text = "100";
+            this.box_ForZoomRatio.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.BackColor = System.Drawing.Color.Transparent;
+            this.label7.Font = new System.Drawing.Font("メイリオ", 12F);
+            this.label7.ForeColor = System.Drawing.Color.Black;
+            this.label7.Location = new System.Drawing.Point(1155, 608);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(26, 24);
+            this.label7.TabIndex = 15;
+            this.label7.Text = "％";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.BackColor = System.Drawing.Color.Transparent;
+            this.label8.Font = new System.Drawing.Font("メイリオ", 10F);
+            this.label8.ForeColor = System.Drawing.Color.Black;
+            this.label8.Location = new System.Drawing.Point(40, 268);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(117, 21);
+            this.label8.TabIndex = 18;
+            this.label8.Text = "Practical Effects";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.Font = new System.Drawing.Font("メイリオ", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(23, 291);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(160, 32);
+            this.comboBox1.TabIndex = 19;
+            this.comboBox1.Text = "None";
+            // 
+            // trackBar1
+            // 
+            this.trackBar1.BackColor = System.Drawing.Color.White;
+            this.trackBar1.LargeChange = 10;
+            this.trackBar1.Location = new System.Drawing.Point(12, 329);
+            this.trackBar1.Maximum = 100;
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(171, 45);
+            this.trackBar1.TabIndex = 20;
+            this.trackBar1.TickFrequency = 50;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1210, 603);
+            this.ClientSize = new System.Drawing.Size(1210, 637);
+            this.Controls.Add(this.trackBar1);
+            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.box_ForZoomRatio);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.trackBar_ForZoom);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.trackBar_forBlur);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -177,6 +319,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_ForRed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_ForGreen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_ForBlue)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_forBlur)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_ForZoom)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -194,6 +339,16 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TrackBar trackBar_forBlur;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TrackBar trackBar_ForZoom;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox box_ForZoomRatio;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.TrackBar trackBar1;
     }
 }
 

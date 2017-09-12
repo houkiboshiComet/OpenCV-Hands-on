@@ -24,22 +24,27 @@ namespace OpenCVApp {
 	}
 
 	Mat ImageController::getImage() {
-		ImageProcessor::changeBrightness(originalImage, 
-			toSignedValue(redSetting, 255), toSignedValue(greenSetting, 255), 
-			toSignedValue(blueSetting, 255), displayImage);
 		
-		return *displayImage;
-	}
+		if (originalImage->empty()) {
+			throw std::runtime_error("image empty");
+		}
 
-	int ImageController::toSignedValue(int setting, int maxAbs) {
-		
-		int base = setting - Properties::CENTRAL_SETTING_VALUE;
-		double ratioToResult = 2.0 * maxAbs / 
-			(double) ( Properties::MAX_SETTING_VALUE - Properties::MIN_SETTING_VALUE);
-		
-		int result = (int)std::round(ratioToResult * base);
-		
-		return result > 0 ? std::min(result, maxAbs) : std::max(result, -maxAbs);
+		ImageProcessor::changeBrightness(originalImage,
+			Settings::toSignedValue(redSetting, 255), 
+			Settings::toSignedValue(greenSetting, 255),
+			Settings::toSignedValue(blueSetting, 255), 
+			displayImage);
+
+		int blurValue = Settings::toSignedValue(blurSetting, 10);
+
+		if (blurValue > 0) {
+			ImageProcessor::blur(displayImage, blurValue, displayImage);
+		}
+		else if (blurValue < 0) {
+			ImageProcessor::sharpen(displayImage, std::abs(blurValue), displayImage);
+		}
+
+		return *displayImage;
 	}
 
 	void ImageController::update(const std::string& imageFile) {
@@ -48,7 +53,6 @@ namespace OpenCVApp {
 		if (originalImage->empty()) {
 			throw std::runtime_error("cannot imread");
 		}
-
 		switch (originalImage->type())
 		{
 		case CV_8UC1:
@@ -65,7 +69,7 @@ namespace OpenCVApp {
 		}
 		originalImage->copyTo(*displayImage);
 	}
-	void ImageController::updateBaseSettings(int r, int g, int b, int blur) {
+	void ImageController::updateBaseSettings(setting_t r, setting_t g, setting_t b, setting_t blur) {
 		redSetting = r;
 		greenSetting = g;
 		blueSetting = b;

@@ -14,6 +14,8 @@ namespace OpenCVApp
     {
 
         private ImagingWrapper imager;
+        private Bitmap actualSizeImage;
+        private double zoomRatio = 1.0;
 
         public MainForm()
         {
@@ -41,12 +43,29 @@ namespace OpenCVApp
 
         private void UpdateImage()
         {
+            if (actualSizeImage != null)
+            {
+                actualSizeImage.Dispose();
+            }
+            actualSizeImage = imager.getImage();
+            DisplayImage();
+        }
+
+        private void DisplayImage()
+        {
+            if (actualSizeImage == null)
+            {
+                return;
+            }
             if (pictureBox.Image != null)
             {
                 pictureBox.Image.Dispose();
             }
-            pictureBox.Image = imager.getImage();
+            pictureBox.Image = new Bitmap(actualSizeImage, 
+                (int) Math.Round(actualSizeImage.Width * zoomRatio),
+                (int) Math.Round(actualSizeImage.Height * zoomRatio));
         }
+
 
         private void BaseSettingChanged(object sender, EventArgs e)
         {
@@ -54,8 +73,15 @@ namespace OpenCVApp
                 trackBar_ForRed.Value,
                 trackBar_ForGreen.Value,
                 trackBar_ForBlue.Value,
-                0);
+                trackBar_forBlur.Value);
             UpdateImage();
+        }
+
+        private void trackBar_ForZoom_ValueChanged(object sender, EventArgs e)
+        {
+            box_ForZoomRatio.Text = trackBar_ForZoom.Value.ToString();
+            zoomRatio = trackBar_ForZoom.Value / 100.0; /* 百分率から割合に戻す */
+            DisplayImage();
         }
     }
 }

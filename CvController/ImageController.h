@@ -13,17 +13,16 @@ namespace OpenCVApp {
 	private:
 		cv::Mat* originalImage;
 		cv::Mat* displayImage;
-		int redSetting = Properties::CENTRAL_SETTING_VALUE;
-		int greenSetting = Properties::CENTRAL_SETTING_VALUE;
-		int blueSetting = Properties::CENTRAL_SETTING_VALUE;
-		int blurSetting = Properties::CENTRAL_SETTING_VALUE;
-
-		static int toSignedValue(int setting, int maxAbs);
+		setting_t redSetting = Settings::CENTRAL_SETTING_VALUE;
+		setting_t greenSetting = Settings::CENTRAL_SETTING_VALUE;
+		setting_t blueSetting = Settings::CENTRAL_SETTING_VALUE;
+		setting_t blurSetting = Settings::CENTRAL_SETTING_VALUE;
+		
 
 	public:
 		ImageController();
 		~ImageController();
-		void updateBaseSettings(int r, int g, int b, int blur);
+		void updateBaseSettings(setting_t r, setting_t g, setting_t b, setting_t blur);
 
 		cv::Mat getImage();
 		void update(const std::string& imageFile);

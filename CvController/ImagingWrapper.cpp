@@ -20,8 +20,12 @@ namespace OpenCVApp {
 		}
 	}
 	System::Drawing::Bitmap^ ImagingWrapper::getImage() {
-		cv::Mat mat = controller->getImage();
-		return toBitmap(&mat);
+		try {
+			cv::Mat mat = controller->getImage();
+			return toBitmap(&mat);
+		} catch(std::runtime_error ) {
+			return nullptr;
+		}
 	}
 
 	ImagingWrapper::ImagingWrapper() {
@@ -66,23 +70,13 @@ namespace OpenCVApp {
 
 		return result;
 	}
-	
-	int ImagingWrapper::toSafetyValue(int value) {
-		if (value > Properties::MAX_SETTING_VALUE) {
-			return Properties::MAX_SETTING_VALUE;
-		}
-		if (value < Properties::MIN_SETTING_VALUE) {
-			return Properties::MIN_SETTING_VALUE;
-		}
-		return value;
-	}
 
-	void ImagingWrapper::updateBaseSettings(int r, int g, int b, int blur) {
+	void ImagingWrapper::updateBaseSettings(setting_t r, setting_t g, setting_t b, setting_t blur) {
 		controller->updateBaseSettings(
-			toSafetyValue(r),
-			toSafetyValue(g),
-			toSafetyValue(b),
-			toSafetyValue(blur)
+			Settings::toSafety(r),
+			Settings::toSafety(g),
+			Settings::toSafety(b),
+			Settings::toSafety(blur)
 			);
 	}
 }

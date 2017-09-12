@@ -20,7 +20,7 @@ namespace OpenCVApp {
 	public:
 		void read(String^ fileName);
 		System::Drawing::Bitmap^ getImage();
-		void updateBaseSettings(int r, int g, int b, int blur);
+		void updateBaseSettings(setting_t r, setting_t g, setting_t b, setting_t blur);
 
 		ImagingWrapper();
 		~ImagingWrapper();
@@ -30,7 +30,6 @@ namespace OpenCVApp {
 
 		static System::Drawing::Bitmap^ toBitmap(const cv::Mat* src);
 		static std::string toStdStr(String^ src);
-		static int toSafetyValue(int value);
 
 	};
 }
