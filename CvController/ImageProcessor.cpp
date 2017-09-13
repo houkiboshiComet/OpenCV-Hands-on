@@ -16,10 +16,11 @@ namespace OpenCVApp {
 
 	}
 
+	const int MaxWitdh::BRIGHTNESS = 255;
 	void ImageProcessor::changeBrightness(const cv::Mat* src, int r, int g, int b, cv::Mat* dst) {
-		toSafeValue<int>(-255, &r, 255);
-		toSafeValue<int>(-255, &g, 255);
-		toSafeValue<int>(-255, &b, 255);
+		toSafeValue<int>(- MaxWitdh::BRIGHTNESS, &r, MaxWitdh::BRIGHTNESS);
+		toSafeValue<int>(- MaxWitdh::BRIGHTNESS, &g, MaxWitdh::BRIGHTNESS);
+		toSafeValue<int>(- MaxWitdh::BRIGHTNESS, &b, MaxWitdh::BRIGHTNESS);
 
 		std::vector<cv::Mat> rgb;
 		
@@ -32,17 +33,19 @@ namespace OpenCVApp {
 		merge(rgb, *dst);
 	}
 
+	const int MaxLevel::BLUR = 10;
 	void ImageProcessor::blur(const cv::Mat* src, int level, cv::Mat* dst) {
-		toSafeValue<int>(0, &level, 10);
+		toSafeValue<int>(0, &level, MaxLevel::BLUR);
 
 		int sideSize = 3 + level * 2;
 		GaussianBlur(*src, *dst, cv::Size(sideSize, sideSize), (double) level);
 	}
 	
+	const int MaxLevel::SHARPNESS = 10;
 	void ImageProcessor::sharpen(const cv::Mat* src, int level, cv::Mat* dst) {
-		toSafeValue<int>(0, &level, 10);
+		toSafeValue<int>(0, &level, MaxLevel::SHARPNESS);
 		
-		int sideSize = 3 + (level / 2) * 2; /* (level / 2) * 2 は2の倍数を保証するため */
+		int sideSize = 3 + (level / 3) * 2; /* levelの増加に応じて、3,3,3, 5,5,5, 7 ・・・と増える*/
 		int centerIndex = sideSize / 2;
 
 		double intensity = level * 0.05;
@@ -65,5 +68,23 @@ namespace OpenCVApp {
 		cv::filter2D(*src, *dst, defaultDepth, kernel);
 	}
 
+	const int MaxLevel::EDGE = 10;
+	void ImageProcessor::detectEdge(const cv::Mat* src, int level, cv::Mat* dst) {
+		toSafeValue<int>(0, &level, MaxLevel::SHARPNESS);
+		
+		cvtColor(*src, *dst, CV_RGB2GRAY);
+		
+		double topThreash = 200.0 - level * 20.0;
+		double bottomThreash = 150.0 - level * 15.0;
 
+		cv::Canny(*dst, *dst, topThreash, bottomThreash);
+		cvtColor(*dst, *dst, CV_GRAY2RGB);
+		
+		*dst = ~*dst;
+	}
+
+	void ImageProcessor::applyOriginalEffect(const cv::Mat* src, int level, cv::Mat* dst) {
+		/* dummy */
+		*src *= 1.2;
+	}
 }

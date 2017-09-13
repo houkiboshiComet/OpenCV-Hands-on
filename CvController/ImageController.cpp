@@ -24,26 +24,12 @@ namespace OpenCVApp {
 	}
 
 	Mat ImageController::getImage() {
-		
 		if (originalImage->empty()) {
 			throw std::runtime_error("image empty");
 		}
-
-		ImageProcessor::changeBrightness(originalImage,
-			Settings::toSignedValue(redSetting, 255), 
-			Settings::toSignedValue(greenSetting, 255),
-			Settings::toSignedValue(blueSetting, 255), 
-			displayImage);
-
-		int blurValue = Settings::toSignedValue(blurSetting, 10);
-
-		if (blurValue > 0) {
-			ImageProcessor::blur(displayImage, blurValue, displayImage);
-		}
-		else if (blurValue < 0) {
-			ImageProcessor::sharpen(displayImage, std::abs(blurValue), displayImage);
-		}
-
+		applyBaseSetting(originalImage, displayImage);
+		applyEffect(displayImage, displayImage);
+		
 		return *displayImage;
 	}
 
@@ -69,11 +55,67 @@ namespace OpenCVApp {
 		}
 		originalImage->copyTo(*displayImage);
 	}
+
+	void ImageController::applyBaseSetting(const Mat* src, Mat* dst) {
+		
+		ImageProcessor::changeBrightness(src,
+			Settings::toSignedValue(redSetting, 255),
+			Settings::toSignedValue(greenSetting, 255),
+			Settings::toSignedValue(blueSetting, 255),
+			dst);
+
+		if (blurSetting > Settings::CENTRAL_SETTING_VALUE) {
+			int blurLevl = Settings::toSignedValue(blurSetting, MaxLevel::BLUR);
+			ImageProcessor::blur(src, blurLevl, dst);
+		}
+		else if (blurSetting < Settings::CENTRAL_SETTING_VALUE) {
+			int sharpLevel = std::abs(Settings::toSignedValue(blurSetting, MaxLevel::EDGE));
+			ImageProcessor::sharpen(src, sharpLevel, dst);
+		}
+	}
+
+	void ImageController::applyEffect(const Mat* src, Mat* dst) {
+
+		if (effectSetting <= Settings::MIN_SETTING_VALUE) {
+			return;
+		}
+		switch (currentEffect)
+		{
+		case EffectType::BALCK_PENCIL: {
+										   int edgeLevel = Settings::toSignedValue(effectSetting, MaxLevel::EDGE);
+										   ImageProcessor::detectEdge(src, edgeLevel, dst);
+										  
+		} break;
+			
+		case EffectType::COLOR_PENCIL: {
+										   int edgeLevel = Settings::toSignedValue(effectSetting, MaxLevel::EDGE);
+										   Mat mask;
+										   ImageProcessor::detectEdge(src, edgeLevel, &mask);
+										   
+										   *dst += mask;
+		} break;
+
+		case  EffectType::ORIGINAL: {
+										ImageProcessor::applyOriginalEffect(src, 10, dst);
+		}
+		case EffectType::NONE :
+		default:
+			break;
+		}
+
+	}
+
+
 	void ImageController::updateBaseSettings(setting_t r, setting_t g, setting_t b, setting_t blur) {
 		redSetting = r;
 		greenSetting = g;
 		blueSetting = b;
 		blurSetting = blur;
+	}
+
+	void ImageController::updateEffect(setting_t setting, EffectType effect) {
+		currentEffect = effect;
+		effectSetting = setting;
 	}
 
 }

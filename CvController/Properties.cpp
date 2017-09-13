@@ -34,4 +34,12 @@ namespace OpenCVApp {
 		}
 		return setting;
 	}
+
+	const EffectPack Effects::none = { EffectType::NONE, "None" };
+	const EffectPack Effects::blackPencil = { EffectType::BALCK_PENCIL, "BlackPencil" };
+	const EffectPack Effects::colorPencil = { EffectType::COLOR_PENCIL, "ColorPencil" };
+	const EffectPack Effects::original = { EffectType::ORIGINAL, "Original" };
+
+	const EffectPack Effects::set[] = { Effects::none, Effects::blackPencil, Effects::colorPencil , Effects::original };
+	const int Effects::EFFECT_COUNT = sizeof(set) / sizeof(set[0]);
 }

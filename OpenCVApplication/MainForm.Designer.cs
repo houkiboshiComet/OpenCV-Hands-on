@@ -46,8 +46,8 @@
             this.box_ForZoomRatio = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.effectBox = new System.Windows.Forms.ComboBox();
+            this.trackBar_ForEffects = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_ForRed)).BeginInit();
@@ -55,7 +55,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_ForBlue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_forBlur)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_ForZoom)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_ForEffects)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonForSelectImage
@@ -85,6 +85,9 @@
             // 
             // panel1
             // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.AutoScroll = true;
             this.panel1.Controls.Add(this.pictureBox);
             this.panel1.Location = new System.Drawing.Point(210, 12);
@@ -137,7 +140,7 @@
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("メイリオ", 10F);
             this.label1.ForeColor = System.Drawing.Color.Red;
-            this.label1.Location = new System.Drawing.Point(81, 69);
+            this.label1.Location = new System.Drawing.Point(81, 65);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(37, 21);
             this.label1.TabIndex = 6;
@@ -149,7 +152,8 @@
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("メイリオ", 10F);
             this.label2.ForeColor = System.Drawing.Color.Green;
-            this.label2.Location = new System.Drawing.Point(74, 115);
+            this.label2.Location = new System.Drawing.Point(74, 110);
+            this.label2.Margin = new System.Windows.Forms.Padding(0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(51, 21);
             this.label2.TabIndex = 7;
@@ -161,7 +165,8 @@
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("メイリオ", 10F);
             this.label3.ForeColor = System.Drawing.Color.Blue;
-            this.label3.Location = new System.Drawing.Point(80, 160);
+            this.label3.Location = new System.Drawing.Point(79, 156);
+            this.label3.Margin = new System.Windows.Forms.Padding(0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(40, 21);
             this.label3.TabIndex = 8;
@@ -206,6 +211,8 @@
             // 
             // trackBar_ForZoom
             // 
+            this.trackBar_ForZoom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBar_ForZoom.BackColor = System.Drawing.Color.White;
             this.trackBar_ForZoom.LargeChange = 10;
             this.trackBar_ForZoom.Location = new System.Drawing.Point(344, 604);
@@ -220,6 +227,7 @@
             // 
             // label6
             // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
             this.label6.BackColor = System.Drawing.Color.Transparent;
             this.label6.Font = new System.Drawing.Font("メイリオ", 12F);
@@ -232,9 +240,11 @@
             // 
             // box_ForZoomRatio
             // 
+            this.box_ForZoomRatio.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.box_ForZoomRatio.Font = new System.Drawing.Font("メイリオ", 12F);
             this.box_ForZoomRatio.Location = new System.Drawing.Point(1039, 602);
             this.box_ForZoomRatio.Name = "box_ForZoomRatio";
+            this.box_ForZoomRatio.ReadOnly = true;
             this.box_ForZoomRatio.Size = new System.Drawing.Size(110, 31);
             this.box_ForZoomRatio.TabIndex = 14;
             this.box_ForZoomRatio.Text = "100";
@@ -242,6 +252,7 @@
             // 
             // label7
             // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.AutoSize = true;
             this.label7.BackColor = System.Drawing.Color.Transparent;
             this.label7.Font = new System.Drawing.Font("メイリオ", 12F);
@@ -264,27 +275,30 @@
             this.label8.TabIndex = 18;
             this.label8.Text = "Practical Effects";
             // 
-            // comboBox1
+            // effectBox
             // 
-            this.comboBox1.Font = new System.Drawing.Font("メイリオ", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(23, 291);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(160, 32);
-            this.comboBox1.TabIndex = 19;
-            this.comboBox1.Text = "None";
+            this.effectBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.effectBox.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.effectBox.Font = new System.Drawing.Font("メイリオ", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.effectBox.FormattingEnabled = true;
+            this.effectBox.Location = new System.Drawing.Point(23, 291);
+            this.effectBox.Margin = new System.Windows.Forms.Padding(2);
+            this.effectBox.Name = "effectBox";
+            this.effectBox.Size = new System.Drawing.Size(160, 32);
+            this.effectBox.TabIndex = 19;
+            this.effectBox.TextChanged += new System.EventHandler(this.effectBox_TextChanged);
             // 
-            // trackBar1
+            // trackBar_ForEffects
             // 
-            this.trackBar1.BackColor = System.Drawing.Color.White;
-            this.trackBar1.LargeChange = 10;
-            this.trackBar1.Location = new System.Drawing.Point(12, 329);
-            this.trackBar1.Maximum = 100;
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(171, 45);
-            this.trackBar1.TabIndex = 20;
-            this.trackBar1.TickFrequency = 50;
+            this.trackBar_ForEffects.BackColor = System.Drawing.Color.White;
+            this.trackBar_ForEffects.LargeChange = 10;
+            this.trackBar_ForEffects.Location = new System.Drawing.Point(12, 329);
+            this.trackBar_ForEffects.Maximum = 100;
+            this.trackBar_ForEffects.Name = "trackBar_ForEffects";
+            this.trackBar_ForEffects.Size = new System.Drawing.Size(171, 45);
+            this.trackBar_ForEffects.TabIndex = 20;
+            this.trackBar_ForEffects.TickFrequency = 50;
+            this.trackBar_ForEffects.ValueChanged += new System.EventHandler(this.trackBar_ForEffects_ValueChanged);
             // 
             // MainForm
             // 
@@ -292,8 +306,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1210, 637);
-            this.Controls.Add(this.trackBar1);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.trackBar_ForEffects);
+            this.Controls.Add(this.effectBox);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.box_ForZoomRatio);
@@ -304,15 +318,15 @@
             this.Controls.Add(this.trackBar_forBlur);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.trackBar_ForBlue);
             this.Controls.Add(this.trackBar_ForGreen);
             this.Controls.Add(this.trackBar_ForRed);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.buttonForSelectImage);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Controls.Add(this.label1);
             this.Name = "MainForm";
             this.Text = "OpenCV Application";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -321,7 +335,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_ForBlue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_forBlur)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_ForZoom)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_ForEffects)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -347,8 +361,8 @@
         private System.Windows.Forms.TextBox box_ForZoomRatio;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.ComboBox effectBox;
+        private System.Windows.Forms.TrackBar trackBar_ForEffects;
     }
 }
 

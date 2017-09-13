@@ -5,9 +5,12 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #pragma managed
-
+#include <iostream>
 #include <string>
 using namespace System::Drawing;
+
+
+#define ARRAY_LENGTH(array) (sizeof(array) / sizeof(array[0]))
 
 namespace OpenCVApp {
 
@@ -78,5 +81,30 @@ namespace OpenCVApp {
 			Settings::toSafety(b),
 			Settings::toSafety(blur)
 			);
+	}
+	template<class T, size_t N>
+	size_t size(T(&)[N]) { return N; }
+	EffectType ImagingWrapper::toEffect(String^ str) {
+		std::string stdStr = toStdStr(str);
+		
+		for (int i = 0; i < Effects::EFFECT_COUNT; i++) {
+			if (stdStr == Effects::set[i].name) {
+				return Effects::set[i].type;
+			}
+		}
+		return EffectType::NONE;
+	}
+
+	array<String^>^ ImagingWrapper::getEffectNames() {
+		array<String^>^ names = gcnew array<String^>(Effects::EFFECT_COUNT);
+
+		for (int i = 0; i < Effects::EFFECT_COUNT; i++) {
+			names[i] = gcnew String(Effects::set[i].name.c_str());
+		}
+		return names;
+	}
+
+	void ImagingWrapper::updateEffect(String^ name, setting_t setting) {
+		controller->updateEffect(setting, toEffect(name));
 	}
 }

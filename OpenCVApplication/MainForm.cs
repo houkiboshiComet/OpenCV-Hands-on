@@ -83,5 +83,24 @@ namespace OpenCVApp
             zoomRatio = trackBar_ForZoom.Value / 100.0; /* 百分率から割合に戻す */
             DisplayImage();
         }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
+            effectBox.Items.AddRange(ImagingWrapper.getEffectNames());
+            effectBox.SelectedIndex = 0;
+        }
+
+        private void effectBox_TextChanged(object sender, EventArgs e)
+        {
+            trackBar_ForEffects.Value = 0;
+        }
+
+        private void trackBar_ForEffects_ValueChanged(object sender, EventArgs e)
+        {
+            imager.updateEffect(effectBox.Text, trackBar_ForEffects.Value);
+            UpdateImage();
+        }
+
     }
 }
