@@ -82,13 +82,13 @@ namespace OpenCVApp {
 		switch (currentEffect)
 		{
 		case EffectType::BALCK_PENCIL: {
-										   int edgeLevel = Settings::toSignedValue(effectSetting, MaxLevel::EDGE);
+										   int edgeLevel = Settings::toValue(effectSetting, MaxLevel::EDGE);
 										   ImageProcessor::detectEdge(src, edgeLevel, dst);
 										  
 		} break;
 			
 		case EffectType::COLOR_PENCIL: {
-										   int edgeLevel = Settings::toSignedValue(effectSetting, MaxLevel::EDGE);
+										   int edgeLevel = Settings::toValue(effectSetting, MaxLevel::EDGE);
 										   Mat mask;
 										   ImageProcessor::detectEdge(src, edgeLevel, &mask);
 										   
@@ -96,6 +96,7 @@ namespace OpenCVApp {
 		} break;
 
 		case  EffectType::ORIGINAL: {
+										int level = Settings::toValue(effectSetting, MaxLevel::ORIGINAL);
 										ImageProcessor::applyOriginalEffect(src, 10, dst);
 		}
 		case EffectType::NONE :

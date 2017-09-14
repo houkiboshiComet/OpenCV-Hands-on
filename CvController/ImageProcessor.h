@@ -10,6 +10,7 @@ namespace OpenCVApp {
 		static const int SHARPNESS;
 		static const int BLUR;
 		static const int EDGE;
+		static const int ORIGINAL;
 	};
 	class MaxWitdh {
 	public:

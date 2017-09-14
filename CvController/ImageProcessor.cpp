@@ -48,7 +48,7 @@ namespace OpenCVApp {
 		int sideSize = 3 + (level / 3) * 2; /* levelの増加に応じて、3,3,3, 5,5,5, 7 ・・・と増える*/
 		int centerIndex = sideSize / 2;
 
-		double intensity = level * 0.05;
+		double intensity = level * 0.01;
 		double intensitySum = 0.0;
 
 		Mat kernel(sideSize, sideSize, CV_64F);
@@ -58,8 +58,9 @@ namespace OpenCVApp {
 				if (y == centerIndex && x == centerIndex) {
 					continue;
 				}
-				kernel.at<double>(y, x) = -intensity;
-				intensitySum += intensity;
+				double localIntensity = -intensity / (std::abs(y - centerIndex) + std::abs(x - centerIndex));
+				kernel.at<double>(y, x) = -localIntensity;
+				intensitySum += localIntensity;
 			}
 		}
 		kernel.at<double>(centerIndex, centerIndex) = intensitySum + 1;
@@ -83,8 +84,8 @@ namespace OpenCVApp {
 		*dst = ~*dst;
 	}
 
+	const int MaxLevel::ORIGINAL = 10;
 	void ImageProcessor::applyOriginalEffect(const cv::Mat* src, int level, cv::Mat* dst) {
-		/* dummy */
-		*src *= 1.2;
+		//meanShift
 	}
 }
