@@ -12,6 +12,7 @@ namespace OpenCVApp {
 	{
 	private:
 		cv::Mat* originalImage;
+		cv::Mat* effectedImage;
 		cv::Mat* displayImage;
 		setting_t redSetting = Settings::CENTRAL_SETTING_VALUE;
 		setting_t greenSetting = Settings::CENTRAL_SETTING_VALUE;

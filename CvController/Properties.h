@@ -19,6 +19,8 @@ namespace OpenCVApp {
 		NONE,
 		BALCK_PENCIL,
 		COLOR_PENCIL,
+		OIL_PAINT,
+		SNOW_STORM,
 		ORIGINAL
 	};
 
@@ -32,6 +34,8 @@ namespace OpenCVApp {
 		static const EffectPack none;
 		static const EffectPack blackPencil;
 		static const EffectPack colorPencil;
+		static const EffectPack oilPaint;
+		static const EffectPack snowstorm;
 
 		static const EffectPack original;
 		static const EffectPack set[];

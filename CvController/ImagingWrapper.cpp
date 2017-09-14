@@ -26,7 +26,8 @@ namespace OpenCVApp {
 		try {
 			cv::Mat mat = controller->getImage();
 			return toBitmap(&mat);
-		} catch(std::runtime_error ) {
+		}
+		catch (std::runtime_error) {
 			return nullptr;
 		}
 	}
@@ -86,7 +87,7 @@ namespace OpenCVApp {
 	size_t size(T(&)[N]) { return N; }
 	EffectType ImagingWrapper::toEffect(String^ str) {
 		std::string stdStr = toStdStr(str);
-		
+
 		for (int i = 0; i < Effects::EFFECT_COUNT; i++) {
 			if (stdStr == Effects::set[i].name) {
 				return Effects::set[i].type;

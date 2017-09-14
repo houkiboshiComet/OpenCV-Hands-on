@@ -20,8 +20,8 @@ namespace OpenCVApp {
 	int Settings::toValue(setting_t setting, int max) {
 		int base = (setting - Settings::MIN_SETTING_VALUE);
 
-		double ratioToResult = (double) max / (double) (Settings::MAX_SETTING_VALUE - Settings::MIN_SETTING_VALUE);
-		int result = (int) std::round(ratioToResult * setting);
+		double ratioToResult = (double)max / (double)(Settings::MAX_SETTING_VALUE - Settings::MIN_SETTING_VALUE);
+		int result = (int)std::round(ratioToResult * setting);
 		return std::min(result, max);
 	}
 
@@ -38,8 +38,17 @@ namespace OpenCVApp {
 	const EffectPack Effects::none = { EffectType::NONE, "None" };
 	const EffectPack Effects::blackPencil = { EffectType::BALCK_PENCIL, "BlackPencil" };
 	const EffectPack Effects::colorPencil = { EffectType::COLOR_PENCIL, "ColorPencil" };
+	const EffectPack Effects::oilPaint = { EffectType::OIL_PAINT, "Oil Paint" };
+	const EffectPack Effects::snowstorm = { EffectType::SNOW_STORM, "Snowstorm" };
 	const EffectPack Effects::original = { EffectType::ORIGINAL, "Original" };
 
-	const EffectPack Effects::set[] = { Effects::none, Effects::blackPencil, Effects::colorPencil , Effects::original };
+	const EffectPack Effects::set[] = {
+		Effects::none,
+		Effects::blackPencil,
+		Effects::colorPencil,
+		Effects::oilPaint,
+		Effects::snowstorm,
+		Effects::original
+	};
 	const int Effects::EFFECT_COUNT = sizeof(set) / sizeof(set[0]);
 }

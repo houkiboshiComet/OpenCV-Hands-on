@@ -8,11 +8,12 @@
 using namespace cv;
 
 namespace OpenCVApp {
-	
+
 	ImageController::ImageController()
 	{
 		originalImage = new Mat();
 		displayImage = new Mat();
+		effectedImage = new Mat();
 
 	}
 
@@ -21,15 +22,13 @@ namespace OpenCVApp {
 	{
 		delete originalImage;
 		delete displayImage;
+		delete effectedImage;
 	}
 
 	Mat ImageController::getImage() {
-		if (originalImage->empty()) {
-			throw std::runtime_error("image empty");
+		if (displayImage->empty()) {
+			throw std::runtime_error("dsiplayss image empty");
 		}
-		applyBaseSetting(originalImage, displayImage);
-		applyEffect(displayImage, displayImage);
-		
 		return *displayImage;
 	}
 
@@ -53,11 +52,12 @@ namespace OpenCVApp {
 		default:
 			break;
 		}
+		originalImage->copyTo(*effectedImage);
 		originalImage->copyTo(*displayImage);
 	}
 
 	void ImageController::applyBaseSetting(const Mat* src, Mat* dst) {
-		
+
 		ImageProcessor::changeBrightness(src,
 			Settings::toSignedValue(redSetting, 255),
 			Settings::toSignedValue(greenSetting, 255),
@@ -66,41 +66,46 @@ namespace OpenCVApp {
 
 		if (blurSetting > Settings::CENTRAL_SETTING_VALUE) {
 			int blurLevl = Settings::toSignedValue(blurSetting, MaxLevel::BLUR);
-			ImageProcessor::blur(src, blurLevl, dst);
+			ImageProcessor::blur(dst, blurLevl, dst);
 		}
 		else if (blurSetting < Settings::CENTRAL_SETTING_VALUE) {
-			int sharpLevel = std::abs(Settings::toSignedValue(blurSetting, MaxLevel::EDGE));
-			ImageProcessor::sharpen(src, sharpLevel, dst);
+			int sharpLevel = std::abs(Settings::toSignedValue(blurSetting, MaxLevel::SHARPNESS));
+			ImageProcessor::sharpen(dst, sharpLevel, dst);
 		}
 	}
 
 	void ImageController::applyEffect(const Mat* src, Mat* dst) {
 
 		if (effectSetting <= Settings::MIN_SETTING_VALUE) {
+			src->copyTo(*dst);
 			return;
 		}
+
+		int level = 0;
 		switch (currentEffect)
 		{
-		case EffectType::BALCK_PENCIL: {
-										   int edgeLevel = Settings::toValue(effectSetting, MaxLevel::EDGE);
-										   ImageProcessor::detectEdge(src, edgeLevel, dst);
-										  
-		} break;
-			
-		case EffectType::COLOR_PENCIL: {
-										   int edgeLevel = Settings::toValue(effectSetting, MaxLevel::EDGE);
-										   Mat mask;
-										   ImageProcessor::detectEdge(src, edgeLevel, &mask);
-										   
-										   *dst += mask;
-		} break;
+		case EffectType::BALCK_PENCIL:
+			level = Settings::toValue(effectSetting, MaxLevel::PENCIL);
+			ImageProcessor::drawWithPenclil(src, level, dst);
+			break;
 
-		case  EffectType::ORIGINAL: {
-										int level = Settings::toValue(effectSetting, MaxLevel::ORIGINAL);
-										ImageProcessor::applyOriginalEffect(src, 10, dst);
-		}
-		case EffectType::NONE :
+		case EffectType::COLOR_PENCIL:
+			level = Settings::toValue(effectSetting, MaxLevel::PENCIL);
+			ImageProcessor::drawWithColorPenclil(src, level, dst);
+			break;
+		case  EffectType::OIL_PAINT:
+			level = Settings::toValue(effectSetting, MaxLevel::OIL_PAINT);
+			ImageProcessor::toOilPaint(src, level, dst);
+
+
+		case  EffectType::ORIGINAL:
+			level = Settings::toValue(effectSetting, MaxLevel::ORIGINAL);
+			ImageProcessor::applyOriginalEffect(src, level, dst);
+			break;
+
+		case EffectType::NONE:
 		default:
+			src->copyTo(*dst);
 			break;
 		}
 
@@ -108,15 +113,28 @@ namespace OpenCVApp {
 
 
 	void ImageController::updateBaseSettings(setting_t r, setting_t g, setting_t b, setting_t blur) {
+		
 		redSetting = r;
 		greenSetting = g;
 		blueSetting = b;
 		blurSetting = blur;
+
+		/* effectedImage作成はコストが重いため、
+		既に作成したものを使いまわす。*/
+		if (!effectedImage->empty()) {
+			applyBaseSetting(effectedImage, displayImage);
+		}
 	}
 
 	void ImageController::updateEffect(setting_t setting, EffectType effect) {
+		
 		currentEffect = effect;
 		effectSetting = setting;
+
+		if ( !originalImage->empty()) {
+			applyEffect(originalImage, effectedImage);
+			applyBaseSetting(effectedImage, displayImage);
+		}
 	}
 
 }
