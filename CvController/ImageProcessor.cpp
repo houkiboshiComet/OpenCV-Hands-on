@@ -4,7 +4,12 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
 using cv::Mat;
+#include <random>
 
 namespace OpenCVApp {
 
@@ -15,6 +20,14 @@ namespace OpenCVApp {
 		*value = std::min(max, *value);
 
 	}
+
+	void ImageProcessor::readImage(const std::string& path, cv::Mat* out) {
+		*out = cv::imread(path, cv::IMREAD_COLOR);
+	}
+	bool ImageProcessor::writeImage(const std::string& path, const cv::Mat* in) {
+		return cv::imwrite(path, *in);
+		
+ 	}
 
 	const int MaxWitdh::BRIGHTNESS = 255;
 	void ImageProcessor::changeBrightness(const cv::Mat* src, int r, int g, int b, cv::Mat* dst) {
@@ -38,7 +51,7 @@ namespace OpenCVApp {
 		toSafeValue<int>(0, &level, MaxLevel::BLUR);
 
 		int sideSize = 3 + level * 2;
-		cv::GaussianBlur(*src, *dst, cv::Size(sideSize, sideSize), (double)level);
+		cv::GaussianBlur(*src, *dst, cv::Size(sideSize, sideSize), 0.1 + level);
 	}
 
 	const int MaxLevel::SHARPNESS = 10;
@@ -111,11 +124,42 @@ namespace OpenCVApp {
 		cv::pyrMeanShiftFiltering(*src, *dst, windowWidth, colorWidth);
 	}
 
-	const int MaxLevel::SNOW_STORM = 100;
+
+#define RAND(max) (rand() % (max))
+#define DOUBLE_RAND() ((double) rand() / (double) RAND_MAX)
+	
+	const int MaxLevel::SNOW_STORM = 200;
 	void ImageProcessor::causeSnowStorm(const cv::Mat* src, int level, cv::Mat* dst) {
 		toSafeValue<int>(0, &level, MaxLevel::SNOW_STORM);
-		/* TO DO
-		 case snow storm by Affine transformation */
+		src->copyTo(*dst);
+
+		srand((unsigned) time(NULL));
+
+		Mat circle(20, 20, CV_8UC3, cv::Scalar(0));
+		cv::circle(circle, cv::Point(10, 10), 5, cv::Scalar(200, 150, 150), -1, CV_AA);
+		ImageProcessor::blur(&circle, 1, &circle);
+		Mat canvas(src->size(), CV_8UC3);
+
+		for (int i = 0; i < level; i++) {
+			canvas = cv::Scalar(0);
+			
+			double angle = std::_Pi / 4.0; /* ƒÎ/2 (45‹)‚ðŠî€‚É */
+			angle += (DOUBLE_RAND() - 0.5) * std::_Pi / 9.0; /* ¶‰E‚ÉƒÎ/ 18 (3‹)‰ñ“] */
+
+			double ratio = 0.5 + 0.5 * DOUBLE_RAND(); /* 0.5 ` 1.0‚Ì”{—¦ */
+			double height = 1.0 * ratio;
+			double width = 2.0 * ratio;
+			/*
+			 * | sin -cos |   | w 0 |   | w*sin -h*cos |
+			 * | cos  sin | X | 0 h | = | w*cos  h*sin |
+			**/
+			Mat matrix = (cv::Mat_<double>(2, 3) <<
+				width * std::sin(angle), -height * std::cos(angle), RAND(src->cols),
+				width * std::cos(angle),  height * std::sin(angle), RAND(src->rows));
+			
+			cv::warpAffine(circle, canvas, matrix, src->size(), cv::INTER_LINEAR, cv::BORDER_TRANSPARENT);
+			*dst += canvas;
+		}
 
 	}
 

@@ -39,7 +39,7 @@ namespace OpenCVApp {
 	const EffectPack Effects::blackPencil = { EffectType::BALCK_PENCIL, "BlackPencil" };
 	const EffectPack Effects::colorPencil = { EffectType::COLOR_PENCIL, "ColorPencil" };
 	const EffectPack Effects::oilPaint = { EffectType::OIL_PAINT, "Oil Paint" };
-	const EffectPack Effects::snowstorm = { EffectType::SNOW_STORM, "Snowstorm" };
+	const EffectPack Effects::snowstorm = { EffectType::SNOW_STORM, "Snow Storm" };
 	const EffectPack Effects::original = { EffectType::ORIGINAL, "Original" };
 
 	const EffectPack Effects::set[] = {

@@ -1,4 +1,7 @@
 #pragma once
+
+#include <string>
+
 namespace cv{
 	class Mat;
 }
@@ -23,6 +26,9 @@ namespace OpenCVApp {
 	class ImageProcessor
 	{
 	public:
+		static void readImage(const std::string& path, cv::Mat* out);
+		static bool writeImage(const std::string& path, const cv::Mat* in);
+
 		static void changeBrightness(const cv::Mat* src, int r, int g, int b, cv::Mat* dst);
 		static void blur(const cv::Mat* src, int level, cv::Mat* dst);
 		static void sharpen(const cv::Mat* src, int level, cv::Mat* dst);
@@ -31,6 +37,7 @@ namespace OpenCVApp {
 		static void toOilPaint(const cv::Mat* src, int level, cv::Mat* dst);
 		static void causeSnowStorm(const cv::Mat* src, int level, cv::Mat* dst);
 		static void applyOriginalEffect(const cv::Mat* src, int level, cv::Mat* dst);
+		
 
 	private:
 		template <typename T>

@@ -14,20 +14,31 @@ using namespace System::Drawing;
 
 namespace OpenCVApp {
 
-	void ImagingWrapper::read(String^ fileName) {
+	void ImagingWrapper::load(String^ fileName) {
 		try {
-			controller->update(toStdStr(fileName));
+			controller->load(toStdStr(fileName));
 		}
 		catch (std::runtime_error e) {
 			throw gcnew System::IO::IOException(gcnew String(e.what()));
 		}
 	}
+	void ImagingWrapper::save(String^ fileName) {
+		try {
+			if (!controller->save(toStdStr(fileName))) {
+				throw gcnew System::IO::IOException("failed to save " + fileName);
+			}
+		}
+		catch (std::runtime_error e) {
+			throw gcnew System::IO::IOException(gcnew String(e.what()));
+		}
+	}
+
 	System::Drawing::Bitmap^ ImagingWrapper::getImage() {
 		try {
 			cv::Mat mat = controller->getImage();
 			return toBitmap(&mat);
 		}
-		catch (std::runtime_error) {
+		catch (std::runtime_error ) {
 			return nullptr;
 		}
 	}

@@ -22,14 +22,13 @@ namespace OpenCVApp
             InitializeComponent();
             imager = new ImagingWrapper();
         }
-
-        private void buttonForSelectImage_Click(object sender, EventArgs e)
+        private void button_ForSelectImageClick(object sender, EventArgs e)
         {
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 try
                 {
-                    imager.read(openFileDialog.FileName);
+                    imager.load(openFileDialog.FileName);
                     UpdateImage();
                 }
                 catch (System.IO.IOException exeption)
@@ -37,10 +36,10 @@ namespace OpenCVApp
                     MessageBox.Show("サポートされていないファイルフォーマットです。" + Environment.NewLine
                         + exeption.Message, "Error",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
-                } 
+                }
             }
         }
-
+    
         private void UpdateImage()
         {
             if (actualSizeImage != null)
@@ -73,7 +72,7 @@ namespace OpenCVApp
                 trackBar_ForRed.Value,
                 trackBar_ForGreen.Value,
                 trackBar_ForBlue.Value,
-                trackBar_forBlur.Value);
+                trackBar_ForBlur.Value);
             UpdateImage();
         }
 
@@ -100,6 +99,32 @@ namespace OpenCVApp
         {
             imager.updateEffect(effectBox.Text, trackBar_ForEffects.Value);
             UpdateImage();
+        }
+
+        private void button_ForSaveImage_Click(object sender, EventArgs e)
+        {
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try 
+                {
+                    imager.save(saveFileDialog.FileName);
+                }
+               catch (System.IO.IOException exeption)
+                {
+                    MessageBox.Show("画像保存に失敗しました。" + Environment.NewLine
+                        + exeption.Message, "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+            }
+        }
+
+        private void button_ForSelectCascade_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                label_ForDetecting.Text = System.IO.Path.GetFileName(openFileDialog.FileName);
+            }
         }
 
     }

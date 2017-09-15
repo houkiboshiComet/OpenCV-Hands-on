@@ -32,7 +32,8 @@ namespace OpenCVApp {
 		void updateEffect(setting_t setting, EffectType effect);
 
 		cv::Mat getImage();
-		void update(const std::string& imageFile);
+		void load(const std::string& imageFile);
+		bool save(const std::string& imageFile);
 	};
 }
 

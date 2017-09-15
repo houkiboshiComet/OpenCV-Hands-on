@@ -18,8 +18,11 @@ namespace OpenCVApp {
 	public ref class ImagingWrapper
 	{
 	public:
-		void read(String^ fileName);
+		void load(String^ fileName);
+		void save(String^ fileName);
+		
 		System::Drawing::Bitmap^ getImage();
+
 		void updateBaseSettings(setting_t r, setting_t g, setting_t b, setting_t blur);
 		static array<String^>^ getEffectNames();
 		void updateEffect(String^ name, setting_t setting);

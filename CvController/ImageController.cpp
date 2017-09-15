@@ -32,9 +32,9 @@ namespace OpenCVApp {
 		return *displayImage;
 	}
 
-	void ImageController::update(const std::string& imageFile) {
-		/* EX 1.1 */
-		*originalImage = imread(imageFile, IMREAD_COLOR);
+	void ImageController::load(const std::string& imageFile) {
+		ImageProcessor::readImage(imageFile, originalImage);
+		
 		if (originalImage->empty()) {
 			throw std::runtime_error("cannot imread");
 		}
@@ -54,6 +54,18 @@ namespace OpenCVApp {
 		}
 		originalImage->copyTo(*effectedImage);
 		originalImage->copyTo(*displayImage);
+	}
+
+	bool ImageController::save(const std::string& imageFile) {
+		if (displayImage->empty()) {
+			return false;
+		}
+		try {
+			return ImageProcessor::writeImage(imageFile, displayImage);
+		}
+		catch (cv::Exception e) {
+			throw std::runtime_error(e.what());
+		}
 	}
 
 	void ImageController::applyBaseSetting(const Mat* src, Mat* dst) {
@@ -93,10 +105,16 @@ namespace OpenCVApp {
 			level = Settings::toValue(effectSetting, MaxLevel::PENCIL);
 			ImageProcessor::drawWithColorPenclil(src, level, dst);
 			break;
-		case  EffectType::OIL_PAINT:
+
+		case EffectType::OIL_PAINT:
 			level = Settings::toValue(effectSetting, MaxLevel::OIL_PAINT);
 			ImageProcessor::toOilPaint(src, level, dst);
+			break;
 
+		case EffectType::SNOW_STORM:
+			level = Settings::toValue(effectSetting, MaxLevel::SNOW_STORM);
+			ImageProcessor::causeSnowStorm(src, level, dst);
+			break;
 
 		case  EffectType::ORIGINAL:
 			level = Settings::toValue(effectSetting, MaxLevel::ORIGINAL);
@@ -113,7 +131,7 @@ namespace OpenCVApp {
 
 
 	void ImageController::updateBaseSettings(setting_t r, setting_t g, setting_t b, setting_t blur) {
-		
+
 		redSetting = r;
 		greenSetting = g;
 		blueSetting = b;
@@ -127,11 +145,11 @@ namespace OpenCVApp {
 	}
 
 	void ImageController::updateEffect(setting_t setting, EffectType effect) {
-		
+
 		currentEffect = effect;
 		effectSetting = setting;
 
-		if ( !originalImage->empty()) {
+		if (!originalImage->empty()) {
 			applyEffect(originalImage, effectedImage);
 			applyBaseSetting(effectedImage, displayImage);
 		}
