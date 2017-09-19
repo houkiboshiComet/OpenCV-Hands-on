@@ -190,7 +190,6 @@
             this.trackBar_ForEffects.Size = new System.Drawing.Size(171, 45);
             this.trackBar_ForEffects.TabIndex = 20;
             this.trackBar_ForEffects.TickFrequency = 50;
-            this.trackBar_ForEffects.ValueChanged += new System.EventHandler(this.trackBar_ForEffects_ValueChanged);
             this.trackBar_ForEffects.MouseCaptureChanged += new System.EventHandler(this.trackBar_ForEffects_ValueChanged);
             // 
             // button_ForSaveImage
@@ -215,7 +214,6 @@
             this.trackBar_ForObjectDetection.Size = new System.Drawing.Size(171, 45);
             this.trackBar_ForObjectDetection.TabIndex = 24;
             this.trackBar_ForObjectDetection.TickFrequency = 50;
-            this.trackBar_ForObjectDetection.ValueChanged += new System.EventHandler(this.ObjectDetectPropetis_Changed);
             this.trackBar_ForObjectDetection.MouseCaptureChanged += new System.EventHandler(this.ObjectDetectPropetis_Changed);
             // 
             // button_ForSelectCascade
@@ -339,7 +337,6 @@
             this.trackBar_ForBlur.TabIndex = 9;
             this.trackBar_ForBlur.TickFrequency = 50;
             this.trackBar_ForBlur.Value = 50;
-            this.trackBar_ForBlur.ValueChanged += new System.EventHandler(this.BaseSettingChanged);
             this.trackBar_ForBlur.MouseCaptureChanged += new System.EventHandler(this.BaseSettingChanged);
             // 
             // trackBar_ForBlue
@@ -353,7 +350,6 @@
             this.trackBar_ForBlue.TabIndex = 5;
             this.trackBar_ForBlue.TickFrequency = 50;
             this.trackBar_ForBlue.Value = 50;
-            this.trackBar_ForBlue.ValueChanged += new System.EventHandler(this.BaseSettingChanged);
             this.trackBar_ForBlue.MouseCaptureChanged += new System.EventHandler(this.BaseSettingChanged);
             // 
             // trackBar_ForGreen
@@ -367,7 +363,6 @@
             this.trackBar_ForGreen.TabIndex = 4;
             this.trackBar_ForGreen.TickFrequency = 50;
             this.trackBar_ForGreen.Value = 50;
-            this.trackBar_ForGreen.ValueChanged += new System.EventHandler(this.BaseSettingChanged);
             this.trackBar_ForGreen.MouseCaptureChanged += new System.EventHandler(this.BaseSettingChanged);
             // 
             // trackBar_ForRed
@@ -381,7 +376,6 @@
             this.trackBar_ForRed.TabIndex = 3;
             this.trackBar_ForRed.TickFrequency = 50;
             this.trackBar_ForRed.Value = 50;
-            this.trackBar_ForRed.ValueChanged += new System.EventHandler(this.BaseSettingChanged);
             this.trackBar_ForRed.MouseCaptureChanged += new System.EventHandler(this.BaseSettingChanged);
             // 
             // label1
