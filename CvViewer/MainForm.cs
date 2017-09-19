@@ -164,11 +164,6 @@ namespace OpenCVApp
             }
         }
 
-        private void trackBar_ForObjectDetection_MouseCaptureChanged(object sender, EventArgs e)
-        {
-
-        }
-
 
     }
 }
