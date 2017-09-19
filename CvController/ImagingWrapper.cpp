@@ -130,6 +130,16 @@ namespace OpenCVApp {
 		controller->updateEffect(setting, toEffect(name));
 	}
 
+	int ImagingWrapper::MAX_SETTING_VALUE() {
+		return Settings::MAX_SETTING_VALUE;
+	}
+	int ImagingWrapper::MIN_SETTING_VALUE() {
+		return Settings::MIN_SETTING_VALUE;
+	}
+	int ImagingWrapper::CENTRAL_SETTING_VALUE() {
+		return Settings::CENTRAL_SETTING_VALUE;
+	}
+
 	void ImagingWrapper::detectObject(setting_t setting, int minNeighbors) {
 		try {
 			controller->detectObject(setting, minNeighbors);

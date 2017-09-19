@@ -16,18 +16,35 @@ namespace OpenCVApp
         private ImagingWrapper imager;
         private Bitmap actualSizeImage;
         private double zoomRatio = 1.0;
+        private const int DEFAULT_MIN_NEIGHBORS = 3; /*< opencvのdetectmultiscaleの引数minneighborsのデフォルト値 */ 
 
         public MainForm()
         {
             InitializeComponent();
             imager = new ImagingWrapper();
         }
+        private void resetEffectComponent()
+        {
+            trackBar_ForBlue.Value = ImagingWrapper.CENTRAL_SETTING_VALUE();
+            trackBar_ForGreen.Value = ImagingWrapper.CENTRAL_SETTING_VALUE();
+            trackBar_ForRed.Value = ImagingWrapper.CENTRAL_SETTING_VALUE();
+            trackBar_ForBlur.Value = ImagingWrapper.CENTRAL_SETTING_VALUE();
+
+            trackBar_ForEffects.Value = ImagingWrapper.MIN_SETTING_VALUE();
+            trackBar_ForObjectDetection.Value = ImagingWrapper.MIN_SETTING_VALUE();
+
+            effectBox.SelectedIndex = 0;
+            comboBox_ForMinNeighbors.Text = DEFAULT_MIN_NEIGHBORS.ToString();
+        }
+
+
         private void button_ForSelectImageClick(object sender, EventArgs e)
         {
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 try
                 {
+                    resetEffectComponent();
                     imager.load(openFileDialog.FileName);
                     UpdateImage();
                 }
@@ -88,8 +105,7 @@ namespace OpenCVApp
            
             effectBox.Items.AddRange(ImagingWrapper.getEffectNames());
             effectBox.SelectedIndex = 0;
-            comboBox_ForMinNeighbors.Text = "3";
-            comboBox_ForMinNeighbors.TextChanged += new System.EventHandler(ObjectDetectPropetis_Changed);
+            comboBox_ForMinNeighbors.Text = DEFAULT_MIN_NEIGHBORS.ToString(); 
         }
 
         private void effectBox_TextChanged(object sender, EventArgs e)
