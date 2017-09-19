@@ -126,7 +126,7 @@ namespace OpenCVApp {
 
 
 #define RAND(max) (rand() % (max))
-#define DOUBLE_RAND() ((double) rand() / (double) RAND_MAX)
+#define DOUBLE_RAND() (((double) rand() * 2.0 / (double) RAND_MAX) - 1.0)
 	
 	const int MaxLevel::SNOW_STORM = 200;
 	void ImageProcessor::causeSnowStorm(const cv::Mat* src, int level, cv::Mat* dst) {
@@ -143,8 +143,8 @@ namespace OpenCVApp {
 		for (int i = 0; i < level; i++) {
 			canvas = cv::Scalar(0);
 			
-			double angle = std::_Pi / 4.0; /* ƒÎ/2 (45‹)‚ðŠî€‚É */
-			angle += (DOUBLE_RAND() - 0.5) * std::_Pi / 9.0; /* ¶‰E‚ÉƒÎ/ 18 (3‹)‰ñ“] */
+			double angle = std::_Pi / 4.0; /* ƒÎ/4 (45‹)‚ðŠî€‚É */
+			angle += DOUBLE_RAND() * std::_Pi / 10; /* ¶‰E‚ÉÅ‘åƒÎ/ 18 (10‹)‰ñ“] */
 
 			double ratio = 0.5 + 0.5 * DOUBLE_RAND(); /* 0.5 ` 1.0‚Ì”{—¦ */
 			double height = 1.0 * ratio;
@@ -168,5 +168,24 @@ namespace OpenCVApp {
 	void ImageProcessor::applyOriginalEffect(const cv::Mat* src, int level, cv::Mat* dst) {
 		/* duumy */
 
+	}
+
+	const int MaxLevel::DETECTION = 10;
+	void ImageProcessor::detectObject(const cv::Mat* src, int level, cv::Mat* dst, cv::CascadeClassifier* cascade, int minNeighbors) {
+		toSafeValue<int>(0, &minNeighbors, MaxLevel::DETECTION);
+		double scaleFactor = 1.55 - 0.5 * (level / (double) MaxLevel::DETECTION);
+
+		src->copyTo(*dst);
+		
+		Mat graySubject;
+		cv::cvtColor(*src, graySubject, cv::COLOR_BGR2GRAY);
+
+		std::vector<cv::Rect> rects;
+	
+		cascade->detectMultiScale(graySubject, rects, scaleFactor, minNeighbors);
+
+		for (auto rect : rects) {
+			cv::rectangle(*dst, rect, cv::Scalar(100,255,100), 2);
+		}
 	}
 }

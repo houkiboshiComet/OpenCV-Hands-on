@@ -31,15 +31,15 @@ namespace OpenCVApp
                     imager.load(openFileDialog.FileName);
                     UpdateImage();
                 }
-                catch (System.IO.IOException exeption)
+                catch (ImagingException exception)
                 {
                     MessageBox.Show("サポートされていないファイルフォーマットです。" + Environment.NewLine
-                        + exeption.Message, "Error",
+                        + exception.Message, "Error",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
-    
+
         private void UpdateImage()
         {
             if (actualSizeImage != null)
@@ -60,9 +60,9 @@ namespace OpenCVApp
             {
                 pictureBox.Image.Dispose();
             }
-            pictureBox.Image = new Bitmap(actualSizeImage, 
-                (int) Math.Round(actualSizeImage.Width * zoomRatio),
-                (int) Math.Round(actualSizeImage.Height * zoomRatio));
+            pictureBox.Image = new Bitmap(actualSizeImage,
+                (int)Math.Round(actualSizeImage.Width * zoomRatio),
+                (int)Math.Round(actualSizeImage.Height * zoomRatio));
         }
 
 
@@ -85,9 +85,11 @@ namespace OpenCVApp
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-
+           
             effectBox.Items.AddRange(ImagingWrapper.getEffectNames());
             effectBox.SelectedIndex = 0;
+            comboBox_ForMinNeighbors.Text = "3";
+            comboBox_ForMinNeighbors.TextChanged += new System.EventHandler(ObjectDetectPropetis_Changed);
         }
 
         private void effectBox_TextChanged(object sender, EventArgs e)
@@ -105,14 +107,14 @@ namespace OpenCVApp
         {
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                try 
+                try
                 {
                     imager.save(saveFileDialog.FileName);
                 }
-               catch (System.IO.IOException exeption)
+                catch (ImagingException exception)
                 {
                     MessageBox.Show("画像保存に失敗しました。" + Environment.NewLine
-                        + exeption.Message, "Error",
+                        + exception.Message, "Error",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
@@ -121,11 +123,52 @@ namespace OpenCVApp
 
         private void button_ForSelectCascade_Click(object sender, EventArgs e)
         {
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            if (openXmlDialog.ShowDialog() == DialogResult.OK)
             {
-                label_ForDetecting.Text = System.IO.Path.GetFileName(openFileDialog.FileName);
+                try
+                {
+                    imager.setCascadeData(openXmlDialog.FileName);
+                    label_ForDetecting.Text = System.IO.Path.GetFileName(openXmlDialog.FileName);
+                }
+                catch (ImagingException exception)
+                {
+                    MessageBox.Show("学習データの読み込みに失敗しました。" + Environment.NewLine
+                        + exception.Message, "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
+
+        private void ObjectDetectPropetis_Changed(object sender, EventArgs e)
+        {
+            if (actualSizeImage == null) {
+                return;
+            }
+            if ( label_ForDetecting.Text.Equals(String.Empty))
+            {
+                MessageBox.Show("[Select Training Data]ボタンから学習データを選択して下さい。", "Error",
+                   MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            try
+            {
+                imager.detectObject(trackBar_ForObjectDetection.Value, Int32.Parse(comboBox_ForMinNeighbors.Text));
+                UpdateImage();
+            }
+            catch (ImagingException exception)
+            {
+                MessageBox.Show("物体検出に失敗しました。" + Environment.NewLine
+                       + exception.Message, "Error",
+                       MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void trackBar_ForObjectDetection_MouseCaptureChanged(object sender, EventArgs e)
+        {
+
+        }
+
 
     }
 }

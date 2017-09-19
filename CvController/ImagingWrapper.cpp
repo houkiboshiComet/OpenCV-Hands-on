@@ -1,5 +1,7 @@
 #include "ImagingWrapper.h"
 #include "Properties.h"
+#include "ImagingException.h"
+#include "CvControlException.h"
 
 #pragma unmanaged
 #include <opencv2/opencv.hpp>
@@ -7,8 +9,8 @@
 #pragma managed
 #include <iostream>
 #include <string>
-using namespace System::Drawing;
 
+using namespace System::Drawing;
 
 #define ARRAY_LENGTH(array) (sizeof(array) / sizeof(array[0]))
 
@@ -18,18 +20,27 @@ namespace OpenCVApp {
 		try {
 			controller->load(toStdStr(fileName));
 		}
-		catch (std::runtime_error e) {
-			throw gcnew System::IO::IOException(gcnew String(e.what()));
+		catch (CvControlException e) {
+			throw gcnew ImagingException(gcnew String(e.what()));
 		}
 	}
 	void ImagingWrapper::save(String^ fileName) {
 		try {
 			if (!controller->save(toStdStr(fileName))) {
-				throw gcnew System::IO::IOException("failed to save " + fileName);
+				throw gcnew ImagingException("failed to save " + fileName);
 			}
 		}
-		catch (std::runtime_error e) {
-			throw gcnew System::IO::IOException(gcnew String(e.what()));
+		catch (CvControlException e) {
+			throw gcnew ImagingException(gcnew String(e.what()));
+		}
+	}
+
+	void ImagingWrapper::setCascadeData(String^ xml) {
+		try {
+			controller->setCascadeData(toStdStr(xml));
+		}
+		catch (CvControlException e) {
+			throw gcnew ImagingException(gcnew String(e.what()));
 		}
 	}
 
@@ -38,7 +49,7 @@ namespace OpenCVApp {
 			cv::Mat mat = controller->getImage();
 			return toBitmap(&mat);
 		}
-		catch (std::runtime_error ) {
+		catch (CvControlException) {
 			return nullptr;
 		}
 	}
@@ -94,8 +105,7 @@ namespace OpenCVApp {
 			Settings::toSafety(blur)
 			);
 	}
-	template<class T, size_t N>
-	size_t size(T(&)[N]) { return N; }
+	
 	EffectType ImagingWrapper::toEffect(String^ str) {
 		std::string stdStr = toStdStr(str);
 
@@ -118,5 +128,15 @@ namespace OpenCVApp {
 
 	void ImagingWrapper::updateEffect(String^ name, setting_t setting) {
 		controller->updateEffect(setting, toEffect(name));
+	}
+
+	void ImagingWrapper::detectObject(setting_t setting, int minNeighbors) {
+		try {
+			controller->detectObject(setting, minNeighbors);
+		}
+		catch (CvControlException e) {
+			throw gcnew ImagingException(gcnew String(e.what()));
+		}
+
 	}
 }

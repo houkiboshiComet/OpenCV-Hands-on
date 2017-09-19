@@ -4,6 +4,7 @@
 
 namespace cv{
 	class Mat;
+	class CascadeClassifier;
 }
 
 namespace OpenCVApp {
@@ -15,8 +16,8 @@ namespace OpenCVApp {
 		static const int PENCIL;
 		static const int OIL_PAINT;
 		static const int SNOW_STORM;
-
 		static const int ORIGINAL;
+		static const int DETECTION;
 	};
 	class MaxWitdh {
 	public:
@@ -37,6 +38,8 @@ namespace OpenCVApp {
 		static void toOilPaint(const cv::Mat* src, int level, cv::Mat* dst);
 		static void causeSnowStorm(const cv::Mat* src, int level, cv::Mat* dst);
 		static void applyOriginalEffect(const cv::Mat* src, int level, cv::Mat* dst);
+		
+		static void detectObject(const cv::Mat* src, int level, cv::Mat* dst, cv::CascadeClassifier* cascade, int minNeighbors);
 		
 
 	private:

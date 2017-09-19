@@ -1,5 +1,6 @@
 #include "ImageController.h"
 #include "ImageProcessor.h"
+#include "CvControlException.h"
 
 #pragma unmanaged
 #include <opencv2/opencv.hpp>
@@ -13,8 +14,9 @@ namespace OpenCVApp {
 	{
 		originalImage = new Mat();
 		displayImage = new Mat();
+		completedImage = new Mat();
 		effectedImage = new Mat();
-
+		cascadeClassifier = new CascadeClassifier();
 	}
 
 
@@ -23,20 +25,22 @@ namespace OpenCVApp {
 		delete originalImage;
 		delete displayImage;
 		delete effectedImage;
+		delete completedImage;
+		delete cascadeClassifier;
 	}
 
 	Mat ImageController::getImage() {
 		if (displayImage->empty()) {
-			throw std::runtime_error("dsiplayss image empty");
+			throw CvControlException("dsiplay image empty");
 		}
 		return *displayImage;
 	}
 
 	void ImageController::load(const std::string& imageFile) {
 		ImageProcessor::readImage(imageFile, originalImage);
-		
+
 		if (originalImage->empty()) {
-			throw std::runtime_error("cannot imread");
+			throw CvControlException("cannot imread");
 		}
 		switch (originalImage->type())
 		{
@@ -53,18 +57,32 @@ namespace OpenCVApp {
 			break;
 		}
 		originalImage->copyTo(*effectedImage);
+		originalImage->copyTo(*completedImage);
 		originalImage->copyTo(*displayImage);
 	}
 
 	bool ImageController::save(const std::string& imageFile) {
 		if (displayImage->empty()) {
-			return false;
+			throw CvControlException("dsiplay image empty");
 		}
 		try {
 			return ImageProcessor::writeImage(imageFile, displayImage);
 		}
 		catch (cv::Exception e) {
-			throw std::runtime_error(e.what());
+			throw CvControlException(e.what());
+		}
+	}
+
+	void ImageController::setCascadeData(const std::string& xml) {
+
+		try {
+			cascadeClassifier->load(xml);
+			if (cascadeClassifier->empty()) {
+				throw CvControlException("cannot create cascade classifier from [" + xml + "]");
+			}
+		}
+		catch (cv::Exception e) {
+			throw CvControlException(e.what());
 		}
 	}
 
@@ -129,6 +147,26 @@ namespace OpenCVApp {
 
 	}
 
+	void ImageController::detectObject(setting_t setting, int minNeighbors) {
+		if (completedImage->empty()) {
+			throw CvControlException("Image for detection is empty.");
+		}
+		if (cascadeClassifier->empty()) {
+			throw CvControlException("Cascade Classifier is empty.");
+		}
+		try {
+			ImageProcessor::detectObject(
+				completedImage,
+				Settings::toValue(setting, MaxLevel::DETECTION),
+				displayImage,
+				cascadeClassifier,
+				minNeighbors);
+		}
+		catch (cv::Exception e) {
+			throw CvControlException(e.what());
+		}
+	}
+
 
 	void ImageController::updateBaseSettings(setting_t r, setting_t g, setting_t b, setting_t blur) {
 
@@ -140,7 +178,8 @@ namespace OpenCVApp {
 		/* effectedImage作成はコストが重いため、
 		既に作成したものを使いまわす。*/
 		if (!effectedImage->empty()) {
-			applyBaseSetting(effectedImage, displayImage);
+			applyBaseSetting(effectedImage, completedImage);
+			completedImage->copyTo(*displayImage);
 		}
 	}
 
@@ -151,7 +190,8 @@ namespace OpenCVApp {
 
 		if (!originalImage->empty()) {
 			applyEffect(originalImage, effectedImage);
-			applyBaseSetting(effectedImage, displayImage);
+			applyBaseSetting(effectedImage, completedImage);
+			completedImage->copyTo(*displayImage);
 		}
 	}
 

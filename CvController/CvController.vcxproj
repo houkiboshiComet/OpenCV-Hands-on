@@ -149,14 +149,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CvControlException.h" />
     <ClInclude Include="ImageController.h" />
     <ClInclude Include="ImageProcessor.h" />
+    <ClInclude Include="ImagingException.h" />
     <ClInclude Include="ImagingWrapper.h" />
     <ClInclude Include="Properties.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CvControlException.cpp" />
     <ClCompile Include="ImageController.cpp" />
     <ClCompile Include="ImageProcessor.cpp" />
+    <ClCompile Include="ImagingException.cpp" />
     <ClCompile Include="ImagingWrapper.cpp" />
     <ClCompile Include="Properties.cpp" />
   </ItemGroup>
