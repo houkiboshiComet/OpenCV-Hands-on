@@ -21,7 +21,11 @@ namespace OpenCVApp {
 		COLOR_PENCIL,
 		OIL_PAINT,
 		SNOW_STORM,
-		ORIGINAL
+		ORIGINAL,
+		TWINKLE,
+		SEPIA,
+		GAMMA,
+		SKETCH
 	};
 
 	const struct EffectPack
@@ -36,6 +40,11 @@ namespace OpenCVApp {
 		static const EffectPack colorPencil;
 		static const EffectPack oilPaint;
 		static const EffectPack snowstorm;
+		
+		static const EffectPack twinkle;
+		static const EffectPack sepia;
+		static const EffectPack gamma;
+		static const EffectPack sketch;
 
 		static const EffectPack original;
 		static const EffectPack set[];

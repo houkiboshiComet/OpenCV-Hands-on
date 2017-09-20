@@ -134,9 +134,29 @@ namespace OpenCVApp {
 			ImageProcessor::causeSnowStorm(src, level, dst);
 			break;
 
-		case  EffectType::ORIGINAL:
+		case EffectType::ORIGINAL:
 			level = Settings::toValue(effectSetting, MaxLevel::ORIGINAL);
 			ImageProcessor::applyOriginalEffect(src, level, dst);
+			break;
+
+		case EffectType::TWINKLE:
+			level = Settings::toValue(effectSetting, MaxLevel::DEFAULT);
+			ImageProcessor::addStars(src, level, dst);
+			break;
+
+		case EffectType::SEPIA:
+			level = Settings::toValue(effectSetting, MaxLevel::DEFAULT);
+			ImageProcessor::toSepiaImage(src, level, dst);
+			break;
+
+		case EffectType::SKETCH :
+			level = Settings::toValue(effectSetting, MaxLevel::DEFAULT);
+			ImageProcessor::skecth(src, level, dst);
+			break;
+
+		case EffectType::GAMMA:
+			level = Settings::toSignedValue(effectSetting, MaxWitdh::DEFAULT);
+			ImageProcessor::applyGammaCorrection(src, level, dst);
 			break;
 
 		case EffectType::NONE:

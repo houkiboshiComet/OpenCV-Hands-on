@@ -40,15 +40,23 @@ namespace OpenCVApp {
 	const EffectPack Effects::colorPencil = { EffectType::COLOR_PENCIL, "ColorPencil" };
 	const EffectPack Effects::oilPaint = { EffectType::OIL_PAINT, "Oil Paint" };
 	const EffectPack Effects::snowstorm = { EffectType::SNOW_STORM, "Snow Storm" };
-	const EffectPack Effects::original = { EffectType::ORIGINAL, "Original" };
-
+	const EffectPack Effects::twinkle = { EffectType::TWINKLE, "Twinkle" };
+	const EffectPack Effects::sepia = { EffectType::SEPIA, "Sepia" };
+	const EffectPack Effects::gamma = { EffectType::GAMMA, "Gamma Correction" };
+	const EffectPack Effects::sketch = { EffectType::SKETCH, "Sketch" };
+	const EffectPack Effects::original = { EffectType::ORIGINAL, "Your Original" };
+	
 	const EffectPack Effects::set[] = {
 		Effects::none,
 		Effects::blackPencil,
 		Effects::colorPencil,
 		Effects::oilPaint,
 		Effects::snowstorm,
-		Effects::original
+		Effects::twinkle,
+		Effects::sepia,
+		Effects::gamma,
+		Effects::sketch,
+		Effects::original,
 	};
 	const int Effects::EFFECT_COUNT = sizeof(set) / sizeof(set[0]);
 }

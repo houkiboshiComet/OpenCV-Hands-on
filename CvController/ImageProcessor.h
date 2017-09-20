@@ -8,7 +8,7 @@ namespace cv{
 }
 
 namespace OpenCVApp {
-	
+
 	class MaxLevel {
 	public:
 		static const int SHARPNESS;
@@ -18,10 +18,12 @@ namespace OpenCVApp {
 		static const int SNOW_STORM;
 		static const int ORIGINAL;
 		static const int DETECTION;
+		static const int DEFAULT;
 	};
 	class MaxWitdh {
 	public:
 		static const int BRIGHTNESS;
+		static const int DEFAULT;
 	};
 
 	class ImageProcessor
@@ -37,13 +39,20 @@ namespace OpenCVApp {
 		static void drawWithColorPenclil(const cv::Mat* src, int level, cv::Mat* dst);
 		static void toOilPaint(const cv::Mat* src, int level, cv::Mat* dst);
 		static void causeSnowStorm(const cv::Mat* src, int level, cv::Mat* dst);
+
 		static void applyOriginalEffect(const cv::Mat* src, int level, cv::Mat* dst);
-		
+
+		/*************** エフェクトのサンプル ********************/
+		static void addStars(const cv::Mat* src, int level, cv::Mat* dst);
+		static void toSepiaImage(const cv::Mat* src, int level, cv::Mat* dst);
+		static void skecth(const cv::Mat* src, int level, cv::Mat* dst);
+		static void applyGammaCorrection(const cv::Mat* src, int level, cv::Mat* dst);
+
 		static void detectObject(const cv::Mat* src, int level, cv::Mat* dst, cv::CascadeClassifier* cascade, int minNeighbors);
-		
+
 
 	private:
 		template <typename T>
-		static void toSafeValue(T min, T* value,  T max);
+		static void toSafeValue(T min, T* value, T max);
 	};
 }

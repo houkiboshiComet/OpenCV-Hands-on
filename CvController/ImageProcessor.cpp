@@ -28,12 +28,11 @@ namespace OpenCVApp {
 	* @detail 画像はCV_8UC3形式のフルカラー画像として読み込まれる。
 	*/
 	void ImageProcessor::readImage(const std::string& path, cv::Mat* out) {
-		*out = cv::imread(path, 0); 
+		*out = cv::imread(path, 0);
 	}
 	bool ImageProcessor::writeImage(const std::string& path, const cv::Mat* in) {
 		return cv::imwrite(path, *in);
-		
- 	}
+	}
 
 	const int MaxWitdh::BRIGHTNESS = 255;
 	/**
@@ -43,7 +42,7 @@ namespace OpenCVApp {
 	* @param g 緑色の明るさ ( -MaxWitdh::BRIGHTNESS <= g <= MaxWitdh::BRIGHTNESS )
 	* @param b 青色の明るさ ( -MaxWitdh::BRIGHTNESS <= b <= MaxWitdh::BRIGHTNESS )
 	* @param dst 変換先の画像
-	* @detail srcをrgb毎のMatに分解し、それぞれの明るさを変更する。
+	* @detail srcをRGB毎のMatに分解し、それぞれの明るさを変更する。
 	*/
 	void ImageProcessor::changeBrightness(const cv::Mat* src, int r, int g, int b, cv::Mat* dst) {
 		toSafeValue<int>(-MaxWitdh::BRIGHTNESS, &r, MaxWitdh::BRIGHTNESS);
@@ -128,7 +127,7 @@ namespace OpenCVApp {
 	* @param src 変換元の画像
 	* @param level 効果のレベル ( 0 <= level <=  MaxLevel::OIL_PAINT )
 	* @param dst 変換先の画像
-	* @detail ミーンシフト法を用いて画素値クラスタリングを行う。 
+	* @detail ミーンシフト法を用いて画素値クラスタリングを行う。
 	* levelに比例して、クラスタリングの幅が拡大する。(大雑把なクラスタリングになる。)
 	*/
 	void ImageProcessor::toOilPaint(const cv::Mat* src, int level, cv::Mat* dst) {
@@ -152,7 +151,7 @@ namespace OpenCVApp {
 		toSafeValue<int>(0, &level, MaxLevel::SNOW_STORM);
 		src->copyTo(*dst);
 
-		srand((unsigned) time(NULL));
+		srand((unsigned)time(NULL));
 
 		Mat circle(20, 20, CV_8UC3, cv::Scalar(0));
 		cv::circle(circle, cv::Point(10, 10), 5, cv::Scalar(200, 150, 150), -1, CV_AA);
@@ -161,19 +160,17 @@ namespace OpenCVApp {
 
 		for (int i = 0; i < level; i++) {
 			canvas = cv::Scalar(0);
-			
+
 			Mat matrix = (cv::Mat_<double>(2, 3) <<
 				1.0, 0.0, RAND(src->cols),
 				0.0, 1.0, 0);
-			
+
 			cv::warpAffine(circle, canvas, matrix, src->size(), cv::INTER_LINEAR, cv::BORDER_TRANSPARENT);
 			*dst += canvas;
 		}
 
 	}
 
-
-	
 
 	const int MaxLevel::DETECTION = 10;
 	/**
@@ -188,17 +185,17 @@ namespace OpenCVApp {
 	*/
 	void ImageProcessor::detectObject(const cv::Mat* src, int level, cv::Mat* dst, cv::CascadeClassifier* cascade, int minNeighbors) {
 		toSafeValue<int>(0, &level, MaxLevel::DETECTION);
-		toSafeValue<int>(1, &minNeighbors, 0x7ffffff );
+		toSafeValue<int>(1, &minNeighbors, 0x7ffffff);
 
 		src->copyTo(*dst);
-		
+
 		Mat graySubject;
 		cv::cvtColor(*src, graySubject, cv::COLOR_BGR2GRAY);
 
 		std::vector<cv::Rect> rects;
 
 		for (auto rect : rects) {
-			cv::rectangle(*dst, rect, cv::Scalar(100,255,100), 2);
+			cv::rectangle(*dst, rect, cv::Scalar(100, 255, 100), 2);
 		}
 	}
 
@@ -212,5 +209,88 @@ namespace OpenCVApp {
 	*/
 	void ImageProcessor::applyOriginalEffect(const cv::Mat* src, int level, cv::Mat* dst) {
 		src->copyTo(*dst);
+	}
+
+	/******************************************************************/
+	// 以下、エフェクトのサンプル 
+	/******************************************************************/
+	const int MaxLevel::DEFAULT = 10;
+	const int MaxWitdh::DEFAULT = 10;
+
+	void ImageProcessor::addStars(const cv::Mat* src, int level, cv::Mat* dst) {
+		toSafeValue<int>(0, &level, MaxLevel::DEFAULT);
+		src->copyTo(*dst);
+
+		srand((unsigned)time(NULL));
+		int sides = src->cols / 20;
+		Mat star(sides, sides, CV_8UC3, cv::Scalar(0));
+		cv::Point points[10];
+		cv::Point trianglePoints[3];
+		for (int i = 0; i < 10; i++) {
+			double diameter = i % 2 == 0 ? sides / 5 : sides / 2;
+			points[i] = cv::Point(
+				(int)std::round(std::cos(std::_Pi  * i / 5.0) * diameter + sides / 2),
+				(int)std::round(std::sin(std::_Pi  * i / 5.0) * diameter + sides / 2));
+		}
+		for (int i = 0; i < 5; i++) {
+			int origin = i * 2;
+			trianglePoints[0] = points[origin];
+			trianglePoints[1] = points[(origin + 3) % 10];
+			trianglePoints[2] = points[(origin + 7) % 10];
+			cv::fillConvexPoly(star, trianglePoints, 3, cv::Scalar(150, 150, 150), CV_AA);
+		}
+
+		ImageProcessor::blur(&star, 1, &star);
+		Mat canvas(src->size(), CV_8UC3);
+		Mat colorStar = star.clone();
+		for (int i = 0; i < level * 10; i++) {
+			canvas = cv::Scalar(0);
+			ImageProcessor::changeBrightness(&star, -RAND(100), -RAND(100), -RAND(100), &colorStar);
+
+			double size = 1.0 + DOUBLE_RAND() * 0.5;
+			double angle = 0.6 + 0.4 * DOUBLE_RAND(); /* 0.2 ～ 1.0の倍率 */
+			Mat matrix = (cv::Mat_<double>(2, 3) <<
+				size * std::sin(angle), -size * std::cos(angle), RAND(src->cols),
+				size * std::cos(angle), size * std::sin(angle), RAND(src->rows));
+			cv::warpAffine(colorStar, canvas, matrix, src->size(), cv::INTER_LINEAR, cv::BORDER_TRANSPARENT);
+			*dst += canvas;
+
+		}
+	}
+
+	void ImageProcessor::toSepiaImage(const cv::Mat* src, int level, cv::Mat* dst) {
+		toSafeValue<int>(0, &level, MaxLevel::DEFAULT);
+
+		Mat sepiaImage;
+		cv::cvtColor(*src, sepiaImage, cv::COLOR_RGB2GRAY);
+		cv::cvtColor(sepiaImage, sepiaImage, cv::COLOR_GRAY2RGB);
+		ImageProcessor::changeBrightness(&sepiaImage, 50, 20, -30, &sepiaImage);
+
+		double ratio = (level + 1.0) / (MaxLevel::DEFAULT + 1.0);
+
+		*dst = ratio* sepiaImage + (*src * (1.0 - ratio));
+	}
+	void ImageProcessor::skecth(const cv::Mat* src, int level, cv::Mat* dst) {
+		toSafeValue<int>(0, &level, MaxLevel::DEFAULT);
+		double ratio = (double)(MaxLevel::DEFAULT - level) / (MaxLevel::DEFAULT);
+
+		float sigma_s = (float)(150.0 * ratio + 10.0); /* 10.0 ～ 160.0 */
+		float sigma_r = (float)(0.28 * ratio + 0.02);  /* 0.02 ～ 0.30 */
+		float shade_factor = (float)(0.07 * ratio + 0.01); /* 0.01 ～ 0.08 */
+
+		Mat grayResultBuff;
+		cv::pencilSketch(*src, grayResultBuff, *dst, sigma_s, sigma_r, shade_factor);
+	}
+
+	void ImageProcessor::applyGammaCorrection(const cv::Mat* src, int level, cv::Mat* dst) {
+		toSafeValue<int>(-MaxWitdh::DEFAULT, &level, MaxWitdh::DEFAULT);
+		double gamma = pow(4.0, (double)level / MaxWitdh::DEFAULT);
+
+		Mat table(1, 256, CV_8UC1);
+		for (int i = 0; i < 256; i++) {
+			table.at<uchar>(i) = (uchar)(pow((double)i / 255.0, 1.0 / gamma) * 255.0);
+		}
+
+		cv::LUT(*src, table, *dst);
 	}
 }
