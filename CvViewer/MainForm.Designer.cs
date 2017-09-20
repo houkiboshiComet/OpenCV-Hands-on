@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.button_ForSelectImage = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.pictureBox = new System.Windows.Forms.PictureBox();
@@ -76,7 +77,7 @@
             // button_ForSelectImage
             // 
             this.button_ForSelectImage.BackColor = System.Drawing.Color.White;
-            this.button_ForSelectImage.Font = new System.Drawing.Font("Meiryo", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.button_ForSelectImage.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button_ForSelectImage.Location = new System.Drawing.Point(11, 11);
             this.button_ForSelectImage.Name = "button_ForSelectImage";
             this.button_ForSelectImage.Size = new System.Drawing.Size(193, 48);
@@ -132,7 +133,7 @@
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
             this.label6.BackColor = System.Drawing.Color.Transparent;
-            this.label6.Font = new System.Drawing.Font("Meiryo", 12F);
+            this.label6.Font = new System.Drawing.Font("メイリオ", 12F);
             this.label6.ForeColor = System.Drawing.Color.Black;
             this.label6.Location = new System.Drawing.Point(224, 656);
             this.label6.Name = "label6";
@@ -144,7 +145,7 @@
             // 
             this.box_ForZoomRatio.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.box_ForZoomRatio.BackColor = System.Drawing.Color.White;
-            this.box_ForZoomRatio.Font = new System.Drawing.Font("Meiryo", 12F);
+            this.box_ForZoomRatio.Font = new System.Drawing.Font("メイリオ", 12F);
             this.box_ForZoomRatio.Location = new System.Drawing.Point(1039, 653);
             this.box_ForZoomRatio.Name = "box_ForZoomRatio";
             this.box_ForZoomRatio.ReadOnly = true;
@@ -158,7 +159,7 @@
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.AutoSize = true;
             this.label7.BackColor = System.Drawing.Color.Transparent;
-            this.label7.Font = new System.Drawing.Font("Meiryo", 12F);
+            this.label7.Font = new System.Drawing.Font("メイリオ", 12F);
             this.label7.ForeColor = System.Drawing.Color.Black;
             this.label7.Location = new System.Drawing.Point(1155, 659);
             this.label7.Name = "label7";
@@ -170,7 +171,7 @@
             // 
             this.effectBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.effectBox.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.effectBox.Font = new System.Drawing.Font("Meiryo", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.effectBox.Font = new System.Drawing.Font("メイリオ", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.effectBox.FormattingEnabled = true;
             this.effectBox.Location = new System.Drawing.Point(13, 23);
             this.effectBox.Margin = new System.Windows.Forms.Padding(2);
@@ -195,7 +196,7 @@
             // button_ForSaveImage
             // 
             this.button_ForSaveImage.BackColor = System.Drawing.Color.White;
-            this.button_ForSaveImage.Font = new System.Drawing.Font("Meiryo", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.button_ForSaveImage.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button_ForSaveImage.Location = new System.Drawing.Point(9, 642);
             this.button_ForSaveImage.Name = "button_ForSaveImage";
             this.button_ForSaveImage.Size = new System.Drawing.Size(198, 45);
@@ -219,7 +220,7 @@
             // button_ForSelectCascade
             // 
             this.button_ForSelectCascade.BackColor = System.Drawing.Color.White;
-            this.button_ForSelectCascade.Font = new System.Drawing.Font("Meiryo", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.button_ForSelectCascade.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button_ForSelectCascade.Location = new System.Drawing.Point(7, 23);
             this.button_ForSelectCascade.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.button_ForSelectCascade.Name = "button_ForSelectCascade";
@@ -233,7 +234,7 @@
             // 
             this.comboBox_ForMinNeighbors.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox_ForMinNeighbors.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.comboBox_ForMinNeighbors.Font = new System.Drawing.Font("Meiryo", 10F);
+            this.comboBox_ForMinNeighbors.Font = new System.Drawing.Font("メイリオ", 10F);
             this.comboBox_ForMinNeighbors.FormattingEnabled = true;
             this.comboBox_ForMinNeighbors.Items.AddRange(new object[] {
             "1",
@@ -260,7 +261,7 @@
             this.groupBox1.Controls.Add(this.button_ForSelectCascade);
             this.groupBox1.Controls.Add(this.comboBox_ForMinNeighbors);
             this.groupBox1.Controls.Add(this.trackBar_ForObjectDetection);
-            this.groupBox1.Font = new System.Drawing.Font("Meiryo", 9F);
+            this.groupBox1.Font = new System.Drawing.Font("メイリオ", 9F);
             this.groupBox1.Location = new System.Drawing.Point(11, 441);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(193, 201);
@@ -272,7 +273,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.BackColor = System.Drawing.Color.Transparent;
-            this.label9.Font = new System.Drawing.Font("Meiryo", 8F);
+            this.label9.Font = new System.Drawing.Font("メイリオ", 8F);
             this.label9.ForeColor = System.Drawing.Color.Black;
             this.label9.Location = new System.Drawing.Point(58, 110);
             this.label9.Name = "label9";
@@ -284,7 +285,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.BackColor = System.Drawing.Color.Transparent;
-            this.label8.Font = new System.Drawing.Font("Meiryo", 8F);
+            this.label8.Font = new System.Drawing.Font("メイリオ", 8F);
             this.label8.ForeColor = System.Drawing.Color.Black;
             this.label8.Location = new System.Drawing.Point(14, 171);
             this.label8.Name = "label8";
@@ -306,7 +307,7 @@
             this.groupBox2.BackColor = System.Drawing.Color.White;
             this.groupBox2.Controls.Add(this.trackBar_ForEffects);
             this.groupBox2.Controls.Add(this.effectBox);
-            this.groupBox2.Font = new System.Drawing.Font("Meiryo", 9F);
+            this.groupBox2.Font = new System.Drawing.Font("メイリオ", 9F);
             this.groupBox2.Location = new System.Drawing.Point(11, 315);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(193, 113);
@@ -318,7 +319,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.BackColor = System.Drawing.Color.Transparent;
-            this.label5.Font = new System.Drawing.Font("Meiryo", 10F);
+            this.label5.Font = new System.Drawing.Font("メイリオ", 10F);
             this.label5.ForeColor = System.Drawing.Color.Black;
             this.label5.Location = new System.Drawing.Point(144, 181);
             this.label5.Name = "label5";
@@ -382,7 +383,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Meiryo", 10F);
+            this.label1.Font = new System.Drawing.Font("メイリオ", 10F);
             this.label1.ForeColor = System.Drawing.Color.Red;
             this.label1.Location = new System.Drawing.Point(76, 13);
             this.label1.Name = "label1";
@@ -394,7 +395,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Font = new System.Drawing.Font("Meiryo", 10F);
+            this.label2.Font = new System.Drawing.Font("メイリオ", 10F);
             this.label2.ForeColor = System.Drawing.Color.Green;
             this.label2.Location = new System.Drawing.Point(67, 68);
             this.label2.Margin = new System.Windows.Forms.Padding(0);
@@ -407,7 +408,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.Transparent;
-            this.label3.Font = new System.Drawing.Font("Meiryo", 10F);
+            this.label3.Font = new System.Drawing.Font("メイリオ", 10F);
             this.label3.ForeColor = System.Drawing.Color.Blue;
             this.label3.Location = new System.Drawing.Point(71, 119);
             this.label3.Margin = new System.Windows.Forms.Padding(0);
@@ -420,7 +421,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.BackColor = System.Drawing.Color.Transparent;
-            this.label4.Font = new System.Drawing.Font("Meiryo", 10F);
+            this.label4.Font = new System.Drawing.Font("メイリオ", 10F);
             this.label4.ForeColor = System.Drawing.Color.Black;
             this.label4.Location = new System.Drawing.Point(6, 178);
             this.label4.Name = "label4";
@@ -440,7 +441,7 @@
             this.groupBox3.Controls.Add(this.trackBar_ForBlue);
             this.groupBox3.Controls.Add(this.trackBar_ForBlur);
             this.groupBox3.Controls.Add(this.label5);
-            this.groupBox3.Font = new System.Drawing.Font("Meiryo", 9F);
+            this.groupBox3.Font = new System.Drawing.Font("メイリオ", 9F);
             this.groupBox3.Location = new System.Drawing.Point(11, 62);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(193, 246);
@@ -468,6 +469,7 @@
             this.Controls.Add(this.trackBar_ForZoom);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.button_ForSelectImage);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "OpenCV Application";
