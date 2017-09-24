@@ -22,7 +22,7 @@ namespace OpenCVApp {
 	}
 
 	/**
-	* @brief <Handson EX1> 画像をリードする。
+	* @brief <Hands-on EX1> 画像をリードする。
 	* @param path 画像ファイルのパス
 	* @param out Mat形式の画像の書き出し先
 	* @detail 画像はCV_8UC3形式のフルカラー画像として読み込まれる。
@@ -36,7 +36,7 @@ namespace OpenCVApp {
 
 	const int MaxWitdh::BRIGHTNESS = 255;
 	/**
-	* @brief <Handson EX2> 画像のRGBの毎の明るさを変更する。
+	* @brief <Hands-on EX2> 画像のRGBの毎の明るさを変更する。
 	* @param src 変換元の画像
 	* @param r 赤色の明るさ ( -MaxWitdh::BRIGHTNESS <= r <= MaxWitdh::BRIGHTNESS )
 	* @param g 緑色の明るさ ( -MaxWitdh::BRIGHTNESS <= g <= MaxWitdh::BRIGHTNESS )
@@ -57,7 +57,7 @@ namespace OpenCVApp {
 
 	const int MaxLevel::BLUR = 10;
 	/**
-	* @brief <Handson EX3> 画像にぼかし効果を加える。
+	* @brief <Hands-on EX3> 画像にぼかし効果を加える。
 	* @param src 変換元の画像
 	* @param level 効果のレベル ( 0 <= level <=  MaxLevel::BLUR )
 	* @param dst 変換先の画像
@@ -70,7 +70,7 @@ namespace OpenCVApp {
 
 	const int MaxLevel::SHARPNESS = 10;
 	/**
-	* @brief <Handson EX4> 画像に鮮鋭化効果を加える。
+	* @brief <Hands-on EX4> 画像に鮮鋭化効果を加える。
 	* @param src 変換元の画像
 	* @param level 効果のレベル ( 0 <= level <=  MaxLevel::SHARPNESS )
 	* @param dst 変換先の画像
@@ -89,7 +89,7 @@ namespace OpenCVApp {
 
 	const int MaxLevel::PENCIL = 10;
 	/**
-	* @brief <Handson EX5.1> 画像を黒鉛筆で描いたような線画画像に変換する。
+	* @brief <Hands-on EX5.1> 画像を黒鉛筆で描いたような線画画像に変換する。
 	* @param src 変換元の画像
 	* @param level 効果のレベル ( 0 <= level <=  MaxLevel::PENCIL )
 	* @param dst 変換先の画像
@@ -97,7 +97,7 @@ namespace OpenCVApp {
 	* 輪郭を黒、背景を白とすることで、線画画像を得る。
 	* levelに比例して多くのエッジを検出する。
 	*/
-	void ImageProcessor::drawWithPenclil(const cv::Mat* src, int level, cv::Mat* dst) {
+	void ImageProcessor::drawWithPencil(const cv::Mat* src, int level, cv::Mat* dst) {
 		toSafeValue<int>(0, &level, MaxLevel::PENCIL);
 
 		cv::cvtColor(*src, *dst, CV_RGB2GRAY);
@@ -106,24 +106,24 @@ namespace OpenCVApp {
 	}
 
 	/**
-	* @brief <Handson EX5.2> 画像を色鉛筆で描いたようなフルカラーの線画画像に変換する。
+	* @brief <Hands-on EX5.2> 画像を色鉛筆で描いたようなフルカラーの線画画像に変換する。
 	* @param src 変換元の画像
 	* @param level 効果のレベル ( 0 <= level <=  MaxLevel::PENCIL )
 	* @param dst 変換先の画像
 	* @detail 白黒の線画を作成し、マスクとすることでフルカラーの線画画像を作成する。
 	*/
-	void ImageProcessor::drawWithColorPenclil(const cv::Mat* src, int level, cv::Mat* dst) {
+	void ImageProcessor::drawWithColoredPencil(const cv::Mat* src, int level, cv::Mat* dst) {
 		toSafeValue<int>(0, &level, MaxLevel::PENCIL);
 
 		Mat mask;
-		drawWithPenclil(src, level, &mask);
+		drawWithPencil(src, level, &mask);
 
 		src->copyTo(*dst);
 	}
 
 	const int MaxLevel::OIL_PAINT = 10;
 	/**
-	* @brief <Handson EX6> 画像を油絵で書いたようなクラスタリングされた画像に変換する。
+	* @brief <Hands-on EX6> 画像を油絵で書いたようなクラスタリングされた画像に変換する。
 	* @param src 変換元の画像
 	* @param level 効果のレベル ( 0 <= level <=  MaxLevel::OIL_PAINT )
 	* @param dst 変換先の画像
@@ -140,7 +140,7 @@ namespace OpenCVApp {
 #define DOUBLE_RAND() (((double) rand() * 2.0 / (double) RAND_MAX) - 1.0)
 	const int MaxLevel::SNOW_STORM = 200;
 	/**
-	* @brief <Handson EX7> 画像に吹雪のような効果を加える。
+	* @brief <Hands-on EX7> 画像に吹雪のような効果を加える。
 	* @param src 変換元の画像
 	* @param level 効果のレベル ( 0 <= level <=  MaxLevel::SNOW_STORM )
 	* @param dst 変換先の画像
@@ -174,7 +174,7 @@ namespace OpenCVApp {
 
 	const int MaxLevel::DETECTION = 10;
 	/**
-	* @brief <Handson EX8> 画像の中から目的の物体を含む矩形を検出し、物体矩形を描画する。
+	* @brief <Hands-on EX8> 画像の中から目的の物体を含む矩形を検出し、物体矩形を描画する。
 	* @param src 変換元の画像
 	* @param level 効果のレベル ( 0 <= level <=  MaxLevel::DETECTION )
 	* @param cascade 物体検出のためのカスケード分類器クラスのオブジェクト
@@ -185,7 +185,7 @@ namespace OpenCVApp {
 	*/
 	void ImageProcessor::detectObject(const cv::Mat* src, int level, cv::Mat* dst, cv::CascadeClassifier* cascade, int minNeighbors) {
 		toSafeValue<int>(0, &level, MaxLevel::DETECTION);
-		toSafeValue<int>(1, &minNeighbors, 0x7ffffff);
+		toSafeValue<int>(1, &minNeighbors, 0x7fffffff);
 
 		src->copyTo(*dst);
 
@@ -201,7 +201,7 @@ namespace OpenCVApp {
 
 	const int MaxLevel::ORIGINAL = 10;
 	/**
-	* @brief <Handson EXα> 画像にオリジナルのエフェクトを加える。
+	* @brief <Hands-on EXα> 画像にオリジナルのエフェクトを加える。
 	* @param src 変換元の画像
 	* @param level 効果のレベル ( 0 <= level <=  MaxLevel::ORIGINAL )
 	* @param dst 変換先の画像

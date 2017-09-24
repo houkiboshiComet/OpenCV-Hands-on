@@ -116,12 +116,12 @@ namespace OpenCVApp {
 		{
 		case EffectType::BALCK_PENCIL:
 			level = Settings::toValue(effectSetting, MaxLevel::PENCIL);
-			ImageProcessor::drawWithPenclil(src, level, dst);
+			ImageProcessor::drawWithPencil(src, level, dst);
 			break;
 
 		case EffectType::COLOR_PENCIL:
 			level = Settings::toValue(effectSetting, MaxLevel::PENCIL);
-			ImageProcessor::drawWithColorPenclil(src, level, dst);
+			ImageProcessor::drawWithColoredPencil(src, level, dst);
 			break;
 
 		case EffectType::OIL_PAINT:
