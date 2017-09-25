@@ -28,7 +28,7 @@ namespace OpenCVApp {
 	* @detail 画像はCV_8UC3形式のフルカラー画像として読み込まれる。
 	*/
 	void ImageProcessor::readImage(const std::string& path, cv::Mat* out) {
-		*out = cv::imread(path, 0);
+		*out = cv::imread(path, cv::ImreadModes::IMREAD_COLOR);
 	}
 	bool ImageProcessor::writeImage(const std::string& path, const cv::Mat* in) {
 		return cv::imwrite(path, *in);
@@ -50,9 +50,18 @@ namespace OpenCVApp {
 		toSafeValue<int>(-MaxWitdh::BRIGHTNESS, &b, MaxWitdh::BRIGHTNESS);
 
 		std::vector<cv::Mat> rgb;
-		split(*src, rgb);
+		cv::split(*src, rgb);
 
+		rgb[0] += b;
+		rgb[1] += g;
+		rgb[2] += r;
+
+		cv::merge(rgb, *dst);
+
+#if 0	//別解
 		src->copyTo(*dst);
+		*dst +=  cv::Scalar(b, g, r);
+#endif
 	}
 
 	const int MaxLevel::BLUR = 10;
@@ -65,7 +74,11 @@ namespace OpenCVApp {
 	*/
 	void ImageProcessor::blur(const cv::Mat* src, int level, cv::Mat* dst) {
 		toSafeValue<int>(0, &level, MaxLevel::BLUR);
-		src->copyTo(*dst);
+
+		int size = 3 + level * 2;
+		double sigma = level + 0.1;
+
+		cv::GaussianBlur(*src, *dst, cv::Size(size, size), sigma);
 	}
 
 	const int MaxLevel::SHARPNESS = 10;
@@ -79,12 +92,42 @@ namespace OpenCVApp {
 	void ImageProcessor::sharpen(const cv::Mat* src, int level, cv::Mat* dst) {
 		toSafeValue<int>(0, &level, MaxLevel::SHARPNESS);
 
-		Mat kernel(3, 3, CV_64F);
-		kernel = cv::Scalar(0);
-		kernel.at<double>(1, 1) = 1.0 - level * 0.1;
+		int sideSize = 3 + (level / 2) * 2; /* levelの増加に応じて、3,3, 5,5, 7 ・・・と増える*/
+		int centerIndex = sideSize / 2;
 
+		/* 鮮鋭化フィルタ */
+		Mat kernel(sideSize, sideSize, CV_64F);
+
+		double sumReduceElement = -0.8 * (level + 1); /* 減算する要素数の合計 */
+		double centerElement = -sumReduceElement + 1;
+
+		int sidecount = sideSize / 2;
+		/**
+		* 1画素当たりの減算する要素数
+		* 合計が、sumReduceElementとなるよう、ループ内で中心からの距離に応じて帳尻合わせをする。
+		*/
+		double localReduceElement = sumReduceElement / (8.0 * sidecount);
+
+		for (int y = 0; y < sideSize; y++) {
+			for (int x = 0; x < sideSize; x++) {
+				if (y == centerIndex && x == centerIndex) {
+					kernel.at<double>(centerIndex, centerIndex) = centerElement;
+					continue;
+				}
+				/* 中心からのチェス盤距離 */
+				int distanceFromCenter = std::max(std::abs(y - centerIndex), std::abs(x - centerIndex));
+				kernel.at<double>(y, x) = localReduceElement / distanceFromCenter;
+			}
+		}
 		int defaultDepth = -1;
 		cv::filter2D(*src, *dst, defaultDepth, kernel);
+		
+#if 0	//別解
+		src->copyTo(*dst);
+		Mat blur;
+		ImageProcessor::blur(src, level, &blur);
+		*dst += (*src - blur) * 3.0; //< 効果を強くするための乗算
+#endif
 	}
 
 	const int MaxLevel::PENCIL = 10;
@@ -101,8 +144,15 @@ namespace OpenCVApp {
 		toSafeValue<int>(0, &level, MaxLevel::PENCIL);
 
 		cv::cvtColor(*src, *dst, CV_RGB2GRAY);
-		cv::cvtColor(*dst, *dst, CV_GRAY2RGB);
 
+		double ratio = (double)level / MaxLevel::PENCIL;
+		double topThreash = 200.0 * (1.0 - ratio); /* 200.0 - - 0.0 で調整 */
+		double bottomThreash = 150.0 * (1.0 - ratio); /* 15.0 - - 0.0 で調整 */
+
+		cv::Canny(*dst, *dst, topThreash, bottomThreash);
+
+		cv::cvtColor(*dst, *dst, CV_GRAY2RGB);
+		*dst = ~*dst;
 	}
 
 	/**
@@ -118,12 +168,12 @@ namespace OpenCVApp {
 		Mat mask;
 		drawWithPencil(src, level, &mask);
 
-		src->copyTo(*dst);
+		*dst = *src + mask;
 	}
 
 	const int MaxLevel::OIL_PAINT = 10;
 	/**
-	* @brief <Hands-on EX6> 画像を油絵で書いたようなクラスタリングされた画像に変換する。
+	* @brief <Handson EX6> 画像を油絵で書いたようなクラスタリングされた画像に変換する。
 	* @param src 変換元の画像
 	* @param level 効果のレベル ( 0 <= level <=  MaxLevel::OIL_PAINT )
 	* @param dst 変換先の画像
@@ -132,7 +182,13 @@ namespace OpenCVApp {
 	*/
 	void ImageProcessor::toOilPaint(const cv::Mat* src, int level, cv::Mat* dst) {
 		toSafeValue<int>(0, &level, MaxLevel::OIL_PAINT);
-		src->copyTo(*dst);
+
+		double ratio = (double)level / MaxLevel::OIL_PAINT;
+
+		int spaceRadius = (int)(10.0 + (50.0  * ratio)); /* 10 - 60 で調整*/
+		int colorRadius = (int)(5.0 + (25.0 * ratio)); /* 5 - 30 で調整 */
+
+		cv::pyrMeanShiftFiltering(*src, *dst, spaceRadius, colorRadius);
 	}
 
 
@@ -161,9 +217,19 @@ namespace OpenCVApp {
 		for (int i = 0; i < level; i++) {
 			canvas = cv::Scalar(0);
 
+			double angle = std::_Pi / 4.0; /* π/4 (45°)を基準に */
+			angle += DOUBLE_RAND() * std::_Pi / 10.0; /* 左右に最大π/ 10 (18°)回転 */
+
+			double ratio = 0.5 + 0.5 * DOUBLE_RAND(); /* 0.5 ～ 1.0の倍率 */
+			double height = 1.0 * ratio;
+			double width = 2.0 * ratio;
+			/*
+			* | sin -cos |   | w 0 |   | w*sin -h*cos |
+			* | cos  sin | X | 0 h | = | w*cos  h*sin |
+			**/
 			Mat matrix = (cv::Mat_<double>(2, 3) <<
-				1.0, 0.0, RAND(src->cols),
-				0.0, 1.0, 0);
+				width * std::sin(angle), -height * std::cos(angle), RAND(src->cols),
+				width * std::cos(angle), height * std::sin(angle), RAND(src->rows));
 
 			cv::warpAffine(circle, canvas, matrix, src->size(), cv::INTER_LINEAR, cv::BORDER_TRANSPARENT);
 			*dst += canvas;
@@ -193,6 +259,10 @@ namespace OpenCVApp {
 		cv::cvtColor(*src, graySubject, cv::COLOR_BGR2GRAY);
 
 		std::vector<cv::Rect> rects;
+
+		double ratio = (double)level / MaxLevel::DETECTION;
+		double scaleFactor = 1.02 + 0.48 * (1.0 - ratio); /* 1.50 - 1.02 で調整 */
+		cascade->detectMultiScale(*src, rects, scaleFactor, minNeighbors);
 
 		for (auto rect : rects) {
 			cv::rectangle(*dst, rect, cv::Scalar(100, 255, 100), 2);
