@@ -9,24 +9,51 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="Error Handling">
+      <UniqueIdentifier>{f45fb570-7bcf-4c4f-aa2b-89cb7aefdd03}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Properties.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageController.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
     <ClCompile Include="ImagingWrapper.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="ImagingController.cpp">
+    <ClCompile Include="ImageProcessor.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="ImagingException.cpp">
+      <Filter>Error Handling</Filter>
+    </ClCompile>
+    <ClCompile Include="CvControlException.cpp">
+      <Filter>Error Handling</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Properties.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageController.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageProcessor.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
     <ClInclude Include="ImagingWrapper.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="ImagingController.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="ImagingException.h">
+      <Filter>Error Handling</Filter>
+    </ClInclude>
+    <ClInclude Include="CvControlException.h">
+      <Filter>Error Handling</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
